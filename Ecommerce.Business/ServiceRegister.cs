@@ -14,9 +14,11 @@ namespace Ecommerce.Business
     {
         public static void AddBusinessLayer(this IServiceCollection services, IConfiguration configuration )
         {
-            services.AddDataAccessorLayer(configuration);
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+           services.AddDataAccessorLayer(configuration);
+           services.AddAutoMapper(Assembly.GetExecutingAssembly());
            services.AddTransient<ICategoryService, CategoryService>();
+           services.AddTransient<IProductService, ProductService>();
+           services.AddTransient<IOrderService, OrderService>();
         }
     }
 }

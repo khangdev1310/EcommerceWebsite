@@ -17,5 +17,6 @@ namespace Ecommerce.Contracts.Dtos
         public Guid? CategoryId { get; set; }
         public CategoryDto Category { get; set; }
 
+        
     }
 }

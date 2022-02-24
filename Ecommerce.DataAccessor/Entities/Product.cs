@@ -24,6 +24,8 @@ namespace Ecommerce.DataAccessor.Entities
 
         public Category Category { get; set; }
 
-       /* public ICollection<ProductPicture> ProductPictures { get; set; }*/
+        public ICollection<ProductImage> ProductImages { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
