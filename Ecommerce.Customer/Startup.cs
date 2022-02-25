@@ -26,8 +26,11 @@ namespace Ecommerce.Customer
         {
             services.AddRazorPages();
             services.AddBusinessLayer(Configuration);
-            
-            
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddMvc().AddRazorPagesOptions(option =>
+            {
+                option.Conventions.AddPageRoute("/Home/Index", "");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +53,10 @@ namespace Ecommerce.Customer
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            //Use status to create error page
+            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithRedirects("/Errors/Error{0}");
 
             app.UseEndpoints(endpoints =>
             {
