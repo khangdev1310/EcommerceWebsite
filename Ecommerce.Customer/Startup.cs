@@ -30,6 +30,8 @@ namespace Ecommerce.Customer
             services.AddMvc().AddRazorPagesOptions(option =>
             {
                 option.Conventions.AddPageRoute("/Home/Index", "");
+                option.Conventions.AddPageRoute("/Home/Contact", "Contact");
+                
             });
         }
 
