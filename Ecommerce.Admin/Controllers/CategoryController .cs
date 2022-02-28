@@ -29,5 +29,11 @@ namespace Ecommerce.Admin.Controllers
             return Created(Endpoints.Category, asset);
             
         }
+        [HttpGet]
+        public async Task<IEnumerable<CategoryDto>> GetAsync() { 
+            return await _categoryService.GetAllAsync();
+        }
+
+
     }
 }
