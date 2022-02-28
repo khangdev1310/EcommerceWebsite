@@ -23,8 +23,12 @@ namespace Ecommerce.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<CategoryDto> AddAsync(CategoryDto categoryDto)
+        public async Task<CategoryDto> AddAsync(CreateCategoryDto categoryDto)
         {
+            if(categoryDto == null)
+            {
+                throw new ArgumentNullException(nameof(categoryDto));
+            }
             var category = _mapper.Map<Category>(categoryDto);
             var item = await _baseRepository.AddAsync(category);
             return _mapper.Map<CategoryDto>(item);

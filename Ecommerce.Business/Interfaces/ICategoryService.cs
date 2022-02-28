@@ -16,7 +16,7 @@ namespace Ecommerce.Business.Interfaces
 
         Task<CategoryDto> GetByNameAsync(string name);
 
-        Task<CategoryDto> AddAsync(CategoryDto categoryDto);
+        Task<CategoryDto> AddAsync(CreateCategoryDto categoryDto);
 
         Task DeleteAsync(Guid id);
 

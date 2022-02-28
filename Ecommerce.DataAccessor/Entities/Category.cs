@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecommerce.DataAccessor.Entities
 {
@@ -12,6 +13,9 @@ namespace Ecommerce.DataAccessor.Entities
         [Required]
         [StringLength(maximumLength: 255)]
         public string Desc { get; set; }
+
+        [Column("Image_url")]
+        public string ImageUrl { get; set; }
 
         public ICollection<Product> Products { get; set; }
     }

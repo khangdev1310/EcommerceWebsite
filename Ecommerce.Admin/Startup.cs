@@ -1,3 +1,4 @@
+using Ecommerce.Business;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,7 +24,7 @@ namespace Ecommerce.Admin
 
             services.AddControllersWithViews();
             services.AddSwaggerGen();
-
+            services.AddBusinessLayer(Configuration);
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

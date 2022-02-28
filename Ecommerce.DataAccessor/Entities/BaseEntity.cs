@@ -10,10 +10,10 @@ namespace Ecommerce.DataAccessor.Entities
         public Guid Id { get; set; }
 
         [Column("Created_at")]
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         [Column("Updated_at")]
-        public DateTime UpdatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         [Column("Created_by")]
         public Guid? CreatorId { get; set; }

@@ -15,10 +15,14 @@ namespace Rookie.Ecom.Business
         private void FromPresentationLayer()
         {
             //Map từ Category Dto -> Category entity
-            CreateMap<CategoryDto, Category>()
+            CreateMap<CategoryDto, Category>(memberList: AutoMapper.MemberList.None)
             //ForMember: Map các property của destinate -> src.
                 .ForMember(d => d.Products, t => t.Ignore());
-            CreateMap<ProductDto, Product>();
+
+            CreateMap<CreateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
+
+            CreateMap<ProductDto, Product>(memberList: AutoMapper.MemberList.None);
+            CreateMap<CreateProductDto, Product>(memberList: AutoMapper.MemberList.None);
 
             CreateMap<ProductImageDto, ProductImage>();
 

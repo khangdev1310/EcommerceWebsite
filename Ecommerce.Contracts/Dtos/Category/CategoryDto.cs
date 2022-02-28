@@ -10,6 +10,7 @@ namespace Ecommerce.Contracts.Dtos
     {
         public string Name { get; set; }
         public string Desc { get; set; }
+        public string ImageUrl { get; set; }
 
     }
 }

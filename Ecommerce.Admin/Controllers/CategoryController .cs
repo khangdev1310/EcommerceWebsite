@@ -22,7 +22,7 @@ namespace Ecommerce.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CategoryDto categoryDto)
+        public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CreateCategoryDto categoryDto)
         {
             Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
             var asset = await _categoryService.AddAsync(categoryDto);
