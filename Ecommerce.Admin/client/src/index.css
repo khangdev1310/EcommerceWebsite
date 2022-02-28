@@ -12,3 +12,6 @@ code {
     monospace;
 }
 
+.row {
+  margin: 0;
+}

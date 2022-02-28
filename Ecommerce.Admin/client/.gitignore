@@ -10,6 +10,8 @@
 
 # production
 /build
+packet-lock.json
+
 
 # misc
 .DS_Store

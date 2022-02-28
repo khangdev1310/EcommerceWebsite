@@ -186,7 +186,7 @@ export default function Home() {
                         <td>
                           <div className="media align-items-center">
                             <div className="avatar avatar-image rounded">
-                              <img src="assets/images/others/thumb-9.jpg" alt />
+                              <img src="/images/others/thumb-9.jpg" alt />
                             </div>
                             <div className="m-l-10">
                               <span>Gray Sofa</span>
@@ -212,7 +212,7 @@ export default function Home() {
                           <div className="media align-items-center">
                             <div className="avatar avatar-image rounded">
                               <img
-                                src="assets/images/others/thumb-10.jpg"
+                                src="/images/others/thumb-10.jpg"
                                 alt
                               />
                             </div>
@@ -240,7 +240,7 @@ export default function Home() {
                           <div className="media align-items-center">
                             <div className="avatar avatar-image rounded">
                               <img
-                                src="assets/images/others/thumb-11.jpg"
+                                src="/images/others/thumb-11.jpg"
                                 alt
                               />
                             </div>
@@ -268,7 +268,7 @@ export default function Home() {
                           <div className="media align-items-center">
                             <div className="avatar avatar-image rounded">
                               <img
-                                src="assets/images/others/thumb-12.jpg"
+                                src="/images/others/thumb-12.jpg"
                                 alt
                               />
                             </div>
@@ -296,7 +296,7 @@ export default function Home() {
                           <div className="media align-items-center">
                             <div className="avatar avatar-image rounded">
                               <img
-                                src="assets/images/others/thumb-13.jpg"
+                                src="/images/others/thumb-13.jpg"
                                 alt
                               />
                             </div>

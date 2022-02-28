@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 export default function Dashboard() {
   
@@ -9,24 +9,24 @@ export default function Dashboard() {
         {/* Header START */}
         <div className="header">
           <div className="logo logo-dark">
-            <a href="/">
+            <Link to="/admin/dashboard">
               <img src="/images/logo/logo.png" alt="Logo" />
               <img
                 className="logo-fold"
                 src="/images/logo/logo-fold.png"
                 alt="Logo"
               />
-            </a>
+            </Link>
           </div>
           <div className="logo logo-white">
-            <a href="index.html">
+            <Link to="/admin/dashboard">
               <img src="/images/logo/logo-white.png" alt="Logo" />
               <img
                 className="logo-fold"
                 src="/images/logo/logo-fold-white.png"
                 alt="Logo"
               />
-            </a>
+            </Link>
           </div>
           <div className="nav-wrap">
             <ul className="nav-left">
@@ -235,77 +235,37 @@ export default function Dashboard() {
           <div className="side-nav-inner">
             <ul className="side-nav-menu scrollable">
               <li className="nav-item">
-                <a className="dropdown-toggle" href="/">
+                <Link className="dropdown-toggle" to="/admin/dashboard">
                   <span className="icon-holder">
                     <i className="anticon anticon-dashboard" />
                   </span>
                   <span className="title">Dashboard</span>
-                </a>
+                </Link>
               </li>
+
+              {/* Quản lý sản phẩm START */}
               <li className="nav-item dropdown">
                 <a className="dropdown-toggle" href="javascript:void(0);">
                   <span className="icon-holder">
                     <i className="anticon anticon-appstore" />
                   </span>
-                  <span className="title">Apps</span>
+                  <span className="title">Quản lý sản phẩm</span>
                   <span className="arrow">
                     <i className="arrow-icon" />
                   </span>
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a href="app-chat.html">Chat</a>
+                    <Link to="/admin/product">Danh sách sản phẩm</Link>
                   </li>
                   <li>
-                    <a href="app-file-manager.html">File Manager</a>
+                    <Link to="/admin/category">Danh mục sản phẩm</Link>
                   </li>
-                  <li>
-                    <a href="app-mail.html">Mail</a>
-                  </li>
-                  <li className="nav-item dropdown">
-                    <a href="javascript:void(0);">
-                      <span>Projects</span>
-                      <span className="arrow">
-                        <i className="arrow-icon" />
-                      </span>
-                    </a>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a href="app-project-list.html">Project List</a>
-                      </li>
-                      <li>
-                        <a href="app-project-details.html">Project Details</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="nav-item dropdown">
-                    <a href="javascript:void(0);">
-                      <span>E-commerce</span>
-                      <span className="arrow">
-                        <i className="arrow-icon" />
-                      </span>
-                    </a>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a href="app-e-commerce-order-list.html">Orders List</a>
-                      </li>
-                      <li>
-                        <a href="app-e-commerce-products.html">Products</a>
-                      </li>
-                      <li>
-                        <a href="app-e-commerce-products-list.html">
-                          Products List
-                        </a>
-                      </li>
-                      <li>
-                        <a href="app-e-commerce-products-edit.html">
-                          Products Edit
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
+
                 </ul>
               </li>
+              {/* Quản lý sản phẩm END */}
+              
               <li className="nav-item dropdown">
                 <a className="dropdown-toggle" href="javascript:void(0);">
                   <span className="icon-holder">
