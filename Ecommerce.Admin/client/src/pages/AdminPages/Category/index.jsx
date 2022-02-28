@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { AsyncGetAllCategories } from '../../../features/Category/CategorySlice'
 
 export default function CategoryList() {
   const navigate = useNavigate()
-  
+  const { categories } = useSelector((state) => state.category)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(AsyncGetAllCategories())
+  }, [])
+
   return (
     <div className="main-content">
       <div className="page-header">
@@ -35,8 +43,6 @@ export default function CategoryList() {
                     />
                   </div>
                 </div>
-
-                
               </div>
             </div>
 
@@ -60,35 +66,44 @@ export default function CategoryList() {
                   <th>ID</th>
                   <th>Tên danh mục </th>
                   <th>Hình ảnh</th>
-                  <th>Mô tả ngắnc</th>
-
+                  <th>Mô tả ngắn</th>
+                  <th>Ngày tạo</th>
+                  <th>Ngày cập nhật</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <img
-                        className="img-fluid rounded"
-                        src="/images/others/thumb-9.jpg"
-                        style={{ maxWidth: 60 }}
-                        alt
-                      />
-                      <h6 className="m-b-0 m-l-10">Gray Sofa</h6>
-                    </div>
-                  </td>
-                  <td>Home Decoration</td>
-                  
-                  <td className="text-right">
-                    <button className="btn btn-tone btn-secondary m-r-5">
-                      <i className="anticon anticon-edit" />
-                    </button>
-                    <button className="btn btn-tone btn-success m-r-5">
-                      <i className="anticon anticon-delete" />
-                    </button>
-                  </td>
-                </tr>
+                {categories &&
+                  categories.map((item,index) => {
+                    return (
+                      <tr>
+                        <td>{index}</td>
+                        <td>{item.name}</td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <img
+                              className="img-fluid rounded"
+                              src="/images/others/thumb-9.jpg"
+                              style={{ maxWidth: 60 }}
+                              alt
+                            />
+                            <h6 className="m-b-0 m-l-10">Gray Sofa</h6>
+                          </div>
+                        </td>
+                        <td>{item.desc}</td>
+                        <td>{item.createdDate.slice(0,10)}</td>
+                        <td>{item.updatedDate.slice(0,10)}</td>
+
+                        <td className="text-right">
+                          <button className="btn btn-tone btn-secondary m-r-5">
+                            <i className="anticon anticon-edit" />
+                          </button>
+                          <button className="btn btn-tone btn-success m-r-5">
+                            <i className="anticon anticon-delete" />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  })}
               </tbody>
             </table>
             <div className="row">

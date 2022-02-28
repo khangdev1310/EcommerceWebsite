@@ -18,6 +18,9 @@ namespace Ecommerce.Admin
 
         public IConfiguration Configuration { get; }
 
+        //Add CORS
+        public string AllOrigins = "AllowAllOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -29,6 +32,19 @@ namespace Ecommerce.Admin
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "client/build";
+            });
+
+            //Add CORS
+            services.AddHttpContextAccessor();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
             });
         }
 
@@ -56,6 +72,9 @@ namespace Ecommerce.Admin
                {
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "KhangV1");
                });
+
+            //Add CORS
+            app.UseCors(AllOrigins);
 
             app.UseEndpoints(endpoints =>
             {

@@ -4,8 +4,8 @@ import Dashboard from './components/Dashboard/Index'
 import CategoryList from './pages/AdminPages/Category'
 import AddCategory from './pages/AdminPages/Category/AddCategory'
 import Home from './pages/Home'
-import ProductList from './pages/Product'
-import AddProduct from './pages/Product/AddProduct'
+import ProductList from './pages/AdminPages/Product/index';
+import AddProduct from './pages/AdminPages/Product/AddProduct'
 
 export default function Router() {
   return useRoutes([

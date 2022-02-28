@@ -1,13 +1,35 @@
 import React from 'react'
-
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { AsyncCreateCategories } from '../../../features/Category/CategorySlice'
 export default function AddCategory() {
+  const [categoryForm, setCategoryForm] = useState({
+    name: '',
+    desc: '',
+    imageUrl: 'string',
+  })
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleChangeValueForm = (e) => {
+    console.log(categoryForm)
+    setCategoryForm({ ...categoryForm, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    dispatch(AsyncCreateCategories(categoryForm))
+    navigate('/admin/category')
+  }
   return (
     <div className="main-content">
       <form>
         <div className="page-header no-gutters has-tab">
           <div className="d-md-flex m-b-15 align-items-center justify-content-between">
             <div className="m-b-15">
-              <button className="btn btn-primary">
+              <button className="btn btn-primary" onClick={handleSubmitForm}>
                 <i className="anticon anticon-save" />
                 <span>Lưu</span>
               </button>
@@ -40,7 +62,10 @@ export default function AddCategory() {
             <div className="card">
               <div className="card-body">
                 <div className="form-group">
-                  <label className="font-weight-semibold" htmlFor="categoryName">
+                  <label
+                    className="font-weight-semibold"
+                    htmlFor="categoryName"
+                  >
                     Tên danh mục
                   </label>
                   <input
@@ -48,10 +73,15 @@ export default function AddCategory() {
                     className="form-control"
                     id="categoryName"
                     placeholder="Nhập tên danh mục"
+                    name="name"
+                    onChange={handleChangeValueForm}
                   />
                 </div>
                 <div className="form-group">
-                  <label className="font-weight-semibold" htmlFor="categoryDesc">
+                  <label
+                    className="font-weight-semibold"
+                    htmlFor="categoryDesc"
+                  >
                     Mô tả ngắn
                   </label>
                   <input
@@ -59,14 +89,24 @@ export default function AddCategory() {
                     className="form-control"
                     id="categoryDesc"
                     placeholder="Nhập mô tả"
+                    name="desc"
+                    onChange={handleChangeValueForm}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="font-weight-semibold m-r-5" htmlFor="productDesc">
+                  <label
+                    className="font-weight-semibold m-r-5"
+                    htmlFor="productDesc"
+                  >
                     Chọn hình ảnh
                   </label>
-                  <input type="file" id="categoryDesc" />
+                  <input
+                    type="file"
+                    name="imageUrl"
+                    id="categoryDesc"
+                    onChange={handleChangeValueForm}
+                  />
                 </div>
               </div>
             </div>
