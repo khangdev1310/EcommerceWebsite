@@ -1,8 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { AsyncCreateCategories } from '../../../features/Category/CategorySlice'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { storage } from '../../../untils/firebase'
+
 export default function AddCategory() {
   const [categoryForm, setCategoryForm] = useState({
     name: '',
@@ -13,23 +16,86 @@ export default function AddCategory() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  // Start IMG file
+  const types = ['image/png', 'image/jpeg', 'image/jpg']
+  const [file, setFile] = useState(null)
+  const [previewUrl, setPreviewUrl] = useState('')
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+
+    if (file && types.includes(file.type)) {
+      setFile(file)
+
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      alert('Image error ')
+    }
+  }
+
+  // Submit form create category
+  const handleCreateCategory = (e) => {
+    e.preventDefault()
+    if (file) {
+      const storageRef = ref(
+        storage,
+        Date.now().toString(36) +
+          Math.random().toString(36).substring(2) +
+          file.name,
+      )
+      const uploadTask = uploadBytesResumable(storageRef, file)
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        },
+        // if failed upload img
+        (error) => {
+          alert(error)
+        },
+
+        // Handle success upload on complete
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL)
+            dispatch(
+              AsyncCreateCategories({ ...categoryForm, imageUrl: downloadURL }),
+            )
+            navigate('/admin/category')
+          })
+        },
+      )
+    } else {
+      if (categoryForm.name && categoryForm.desc) {
+        dispatch(AsyncCreateCategories({ ...categoryForm, imageUrl: null }))
+        navigate('/admin/category')
+      }
+    }
+  }
+  // End IMG file
+
+  // Start FORM
   const handleChangeValueForm = (e) => {
     console.log(categoryForm)
     setCategoryForm({ ...categoryForm, [e.target.name]: e.target.value })
   }
+  //End FORM
 
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-    dispatch(AsyncCreateCategories(categoryForm))
-    navigate('/admin/category')
-  }
   return (
     <div className="main-content">
       <form>
         <div className="page-header no-gutters has-tab">
           <div className="d-md-flex m-b-15 align-items-center justify-content-between">
             <div className="m-b-15">
-              <button className="btn btn-primary" onClick={handleSubmitForm}>
+              <button
+                className="btn btn-primary"
+                onClick={handleCreateCategory}
+              >
                 <i className="anticon anticon-save" />
                 <span>Lưu</span>
               </button>
@@ -105,8 +171,18 @@ export default function AddCategory() {
                     type="file"
                     name="imageUrl"
                     id="categoryDesc"
-                    onChange={handleChangeValueForm}
+                    onChange={handleFileChange}
                   />
+                  <div>
+                    {previewUrl && (
+                      <img
+                        src={previewUrl}
+                        alt="preview"
+                        width={100}
+                        height={100}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,6 +210,10 @@ export default function AddCategory() {
             </div>
           </div>
         </div>
+
+        <NavLink to="/admin/category" style={{ padding: '0.5rem' }}>
+          Back to category
+        </NavLink>
       </form>
     </div>
   )

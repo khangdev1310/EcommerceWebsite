@@ -12,7 +12,7 @@
 
 # production
 /build
-packet-lock.json
+package-lock.json
 
 
 # misc

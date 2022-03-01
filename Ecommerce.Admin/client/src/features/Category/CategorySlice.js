@@ -26,7 +26,7 @@ export const AsyncCreateCategories = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await axiosClient.post('category', values)
-      console.log(response);
+      console.log(values);
       return response
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -47,7 +47,7 @@ const categorySlice = createSlice({
       state.categories = action.payload.data
     },
     [AsyncGetAllCategories.rejected]: (state, action) => {
-      state.error = action.payload;
+      state.error = action.error;
     },
     [AsyncCreateCategories.pending]: (state, action) => {
       state.loading = true
@@ -56,7 +56,7 @@ const categorySlice = createSlice({
       state.loading = false;
     },
     [AsyncCreateCategories.rejected]: (state, action) => {
-      state.error = action.payload;
+      state.error = action.error;
     },
   },
 })

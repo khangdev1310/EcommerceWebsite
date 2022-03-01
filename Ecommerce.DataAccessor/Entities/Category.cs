@@ -14,6 +14,7 @@ namespace Ecommerce.DataAccessor.Entities
         [StringLength(maximumLength: 255)]
         public string Desc { get; set; }
 
+        [Required]
         [Column("Image_url")]
         public string ImageUrl { get; set; }
 

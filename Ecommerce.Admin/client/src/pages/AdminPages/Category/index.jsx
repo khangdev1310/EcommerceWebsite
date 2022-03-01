@@ -82,9 +82,9 @@ export default function CategoryList() {
                           <div className="d-flex align-items-center">
                             <img
                               className="img-fluid rounded"
-                              src="/images/others/thumb-9.jpg"
+                              src={item.imageUrl}
                               style={{ maxWidth: 60 }}
-                              alt
+                              alt="imageAlternative"
                             />
                             <h6 className="m-b-0 m-l-10">Gray Sofa</h6>
                           </div>
