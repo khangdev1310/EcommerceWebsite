@@ -12,6 +12,12 @@ export default function CategoryList() {
     dispatch(AsyncGetAllCategories())
   }, [])
 
+  // View category
+  const handleViewCategory = (id) => {
+    const viewCategory = categories.find(item => item.id === id)
+    navigate('/admin/category/view', {state: viewCategory})
+  }
+
   return (
     <div className="main-content">
       <div className="page-header">
@@ -75,8 +81,8 @@ export default function CategoryList() {
                 {categories &&
                   categories.map((item,index) => {
                     return (
-                      <tr>
-                        <td>{index}</td>
+                      <tr key={item.id}>
+                        <td>{index+1}</td>
                         <td>{item.name}</td>
                         <td>
                           <div className="d-flex align-items-center">
@@ -86,7 +92,7 @@ export default function CategoryList() {
                               style={{ maxWidth: 60 }}
                               alt="imageAlternative"
                             />
-                            <h6 className="m-b-0 m-l-10">Gray Sofa</h6>
+                            
                           </div>
                         </td>
                         <td>{item.desc}</td>
@@ -94,6 +100,9 @@ export default function CategoryList() {
                         <td>{item.updatedDate.slice(0,10)}</td>
 
                         <td className="text-right">
+                        <button className="btn btn-tone btn-primary m-r-5" onClick={() => handleViewCategory(item.id)}>
+                            View
+                          </button>
                           <button className="btn btn-tone btn-secondary m-r-5">
                             <i className="anticon anticon-edit" />
                           </button>

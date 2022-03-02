@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axiosClient from '../../untils/axiosClient'
+import { SweetAlert } from '../../untils/SweetAlert'
 
 const initialState = {
   categories: [],
@@ -54,9 +55,11 @@ const categorySlice = createSlice({
     },
     [AsyncCreateCategories.fulfilled]: (state, action) => {
       state.loading = false;
+      SweetAlert('success', 'Thêm danh mục thành công', 1500)
     },
     [AsyncCreateCategories.rejected]: (state, action) => {
       state.error = action.error;
+      SweetAlert('error', 'Thêm danh mục thất bại', 1000)
     },
   },
 })

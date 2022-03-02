@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { AsyncCreateCategories } from '../../../features/Category/CategorySlice'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '../../../untils/firebase'
+import { SweetAlert } from '../../../untils/SweetAlert'
+
 
 export default function AddCategory() {
   const [categoryForm, setCategoryForm] = useState({
@@ -33,7 +35,7 @@ export default function AddCategory() {
       }
       reader.readAsDataURL(file)
     } else {
-      alert('Image error ')
+      SweetAlert("error","Không đúng định dạng ảnh",1500)
     }
   }
 
@@ -56,7 +58,7 @@ export default function AddCategory() {
         },
         // if failed upload img
         (error) => {
-          alert(error)
+          
         },
 
         // Handle success upload on complete
@@ -85,6 +87,8 @@ export default function AddCategory() {
     setCategoryForm({ ...categoryForm, [e.target.name]: e.target.value })
   }
   //End FORM
+
+  
 
   return (
     <div className="main-content">

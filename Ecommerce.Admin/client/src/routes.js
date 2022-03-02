@@ -6,6 +6,7 @@ import AddCategory from './pages/AdminPages/Category/AddCategory'
 import Home from './pages/Home'
 import ProductList from './pages/AdminPages/Product/index';
 import AddProduct from './pages/AdminPages/Product/AddProduct'
+import ViewCategory from './pages/AdminPages/Category/ViewCategory'
 
 export default function Router() {
   return useRoutes([
@@ -50,7 +51,10 @@ export default function Router() {
           path: 'create',
           element: <AddCategory />,
         },
-       
+        {
+          path: 'view',
+          element: <ViewCategory />,
+        },
       ]
     }
     
