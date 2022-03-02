@@ -36,6 +36,7 @@ export default function AddCategory() {
       reader.readAsDataURL(file)
     } else {
       SweetAlert("error","Không đúng định dạng ảnh",1500)
+      setPreviewUrl("");
     }
   }
 

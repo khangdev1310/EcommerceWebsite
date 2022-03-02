@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { AsyncGetAllCategories } from '../../../features/Category/CategorySlice'
@@ -8,15 +8,18 @@ export default function CategoryList() {
   const { categories } = useSelector((state) => state.category)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(AsyncGetAllCategories())
-  }, [])
+  // Search item with the name\
+  const [searchTerm, setSearchTerm] = useState('')
 
   // View category
   const handleViewCategory = (id) => {
-    const viewCategory = categories.find(item => item.id === id)
-    navigate('/admin/category/view', {state: viewCategory})
+    const viewCategory = categories.find((item) => item.id === id)
+    navigate('/admin/category/view', { state: viewCategory })
   }
+
+  useEffect(() => {
+    dispatch(AsyncGetAllCategories())
+  }, [])
 
   return (
     <div className="main-content">
@@ -45,7 +48,10 @@ export default function CategoryList() {
                       name="keyword"
                       type="text"
                       className="form-control"
-                      placeholder="tìm kiếm sản phẩm"
+                      placeholder="Tìm kiếm sản phẩm"
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value)
+                      }}
                     />
                   </div>
                 </div>
@@ -79,40 +85,52 @@ export default function CategoryList() {
               </thead>
               <tbody>
                 {categories &&
-                  categories.map((item,index) => {
-                    return (
-                      <tr key={item.id}>
-                        <td>{index+1}</td>
-                        <td>{item.name}</td>
-                        <td>
-                          <div className="d-flex align-items-center">
-                            <img
-                              className="img-fluid rounded"
-                              src={item.imageUrl}
-                              style={{ maxWidth: 60 }}
-                              alt="imageAlternative"
-                            />
-                            
-                          </div>
-                        </td>
-                        <td>{item.desc}</td>
-                        <td>{item.createdDate.slice(0,10)}</td>
-                        <td>{item.updatedDate.slice(0,10)}</td>
+                  categories
+                    .filter((val) => {
+                      if (searchTerm === '') {
+                        return val
+                      } else if (
+                        val.name.toLowerCase().includes(searchTerm.toLowerCase())
+                      ) {
+                        return val
+                      }
+                    })
+                    .map((item, index) => {
+                      return (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
+                          <td>{item.name}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <img
+                                className="img-fluid rounded"
+                                src={item.imageUrl}
+                                style={{ maxWidth: 60 }}
+                                alt="imageAlternative"
+                              />
+                            </div>
+                          </td>
+                          <td>{item.desc}</td>
+                          <td>{item.createdDate.slice(0, 10)}</td>
+                          <td>{item.updatedDate.slice(0, 10)}</td>
 
-                        <td className="text-right">
-                        <button className="btn btn-tone btn-primary m-r-5" onClick={() => handleViewCategory(item.id)}>
-                            View
-                          </button>
-                          <button className="btn btn-tone btn-secondary m-r-5">
-                            <i className="anticon anticon-edit" />
-                          </button>
-                          <button className="btn btn-tone btn-success m-r-5">
-                            <i className="anticon anticon-delete" />
-                          </button>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                          <td className="text-right">
+                            <button
+                              className="btn btn-tone btn-primary m-r-5"
+                              onClick={() => handleViewCategory(item.id)}
+                            >
+                              View
+                            </button>
+                            <button className="btn btn-tone btn-secondary m-r-5">
+                              <i className="anticon anticon-edit" />
+                            </button>
+                            <button className="btn btn-tone btn-success m-r-5">
+                              <i className="anticon anticon-delete" />
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    })}
               </tbody>
             </table>
             <div className="row">
