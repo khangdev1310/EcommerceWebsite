@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { formatDateTime } from '../../../untils/formatDateTime'
 export default function ViewCategory() {
   const navigate = useNavigate()
   const { state } = useLocation()
@@ -17,7 +18,7 @@ export default function ViewCategory() {
             </div>
             <div className="m-l-15">
               <h4 className="m-b-0">{state.name}</h4>
-              <p className="text-muted m-b-0">Code: {state.id.slice(0,7)}</p>
+              <p className="text-muted m-b-0">Code: {state.id.slice(0, 7)}</p>
             </div>
           </div>
           <div className="m-b-15">
@@ -64,11 +65,11 @@ export default function ViewCategory() {
                       </tr>
                       <tr>
                         <td>Ngày tạo:</td>
-                        <td>{state.createdDate.slice(0, 10)}</td>
+                        <td>{formatDateTime(state.createdDate)}</td>
                       </tr>
                       <tr>
                         <td>Ngày cập nhật:</td>
-                        <td>{state.updatedDate.slice(0, 10)}</td>
+                        <td>{formatDateTime(state.updatedDate)}</td>
                       </tr>
                     </tbody>
                   </table>

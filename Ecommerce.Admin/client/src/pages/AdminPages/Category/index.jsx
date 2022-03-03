@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { AsyncGetAllCategories } from '../../../features/Category/CategorySlice'
+import {
+  AsyncDeleteCategories,
+  AsyncGetAllCategories,
+  setDeleteCategory,
+} from '../../../features/Category/CategorySlice'
+import Swal from 'sweetalert2'
+import {formatDateTime} from '../../../untils/formatDateTime'
 
 export default function CategoryList() {
   const navigate = useNavigate()
@@ -16,6 +22,32 @@ export default function CategoryList() {
     const viewCategory = categories.find((item) => item.id === id)
     navigate('/admin/category/view', { state: viewCategory })
   }
+
+  // Delete category
+  const handleDeleteCategory = (item) => {
+   
+    dispatch(setDeleteCategory(item))
+
+    Swal.fire({
+      title: 'Lưu ý',
+      text: 'Bạn có muốn xóa danh mục này không',
+      icon: 'warning',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(AsyncDeleteCategories({ id: item.id }))
+      }
+      else {
+        Swal.fire({
+          title: "Hủy bỏ",
+          icon: "info",
+          timer: 1000
+        })
+      }
+    })
+  }
+
+  console.log('Hello')
 
   useEffect(() => {
     dispatch(AsyncGetAllCategories())
@@ -90,7 +122,9 @@ export default function CategoryList() {
                       if (searchTerm === '') {
                         return val
                       } else if (
-                        val.name.toLowerCase().includes(searchTerm.toLowerCase())
+                        val.name
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
                       ) {
                         return val
                       }
@@ -111,8 +145,8 @@ export default function CategoryList() {
                             </div>
                           </td>
                           <td>{item.desc}</td>
-                          <td>{item.createdDate.slice(0, 10)}</td>
-                          <td>{item.updatedDate.slice(0, 10)}</td>
+                          <td>{new Date(item.createdDate).toLocaleDateString()}</td>
+                          <td>{new Date(item.updatedDate).toLocaleDateString()}</td>
 
                           <td className="text-right">
                             <button
@@ -124,7 +158,10 @@ export default function CategoryList() {
                             <button className="btn btn-tone btn-secondary m-r-5">
                               <i className="anticon anticon-edit" />
                             </button>
-                            <button className="btn btn-tone btn-success m-r-5">
+                            <button
+                              className="btn btn-tone btn-success m-r-5"
+                              onClick={() => handleDeleteCategory(item)}
+                            >
                               <i className="anticon anticon-delete" />
                             </button>
                           </td>
