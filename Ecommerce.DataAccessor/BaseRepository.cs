@@ -65,5 +65,12 @@ namespace Ecommerce.DataAccessor
             _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync();
+            return entities;
+        }
     }
 }

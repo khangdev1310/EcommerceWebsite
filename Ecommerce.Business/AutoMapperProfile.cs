@@ -24,7 +24,11 @@ namespace Rookie.Ecom.Business
             CreateMap<ProductDto, Product>(memberList: AutoMapper.MemberList.None);
             CreateMap<CreateProductDto, Product>(memberList: AutoMapper.MemberList.None);
 
-            CreateMap<ProductImageDto, ProductImage>();
+
+            //Product image mapper
+            CreateMap<ProductImageDto, ProductImage>(memberList: AutoMapper.MemberList.None);
+
+            CreateMap<CreateProductImageDto, ProductImage>(memberList: AutoMapper.MemberList.None);
 
             CreateMap<RatingDto, Rating>();
 

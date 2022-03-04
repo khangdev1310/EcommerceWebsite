@@ -23,8 +23,13 @@ namespace Ecommerce.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<ProductDto> AddAsync(ProductDto ProductDto)
+        public async Task<ProductDto> AddAsync(CreateProductDto ProductDto)
         {
+            if(ProductDto == null)
+            {
+                throw new ArgumentNullException(nameof(ProductDto));
+            }
+
             var Product = _mapper.Map<Product>(ProductDto);
             var item = await _baseRepository.AddAsync(Product);
             return _mapper.Map<ProductDto>(item);
@@ -66,7 +71,29 @@ namespace Ecommerce.Business.Services
             return _mapper.Map<ProductDto>(Product);
         }
 
-        
+
+        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int page, int limit)
+        {
+            var query = _baseRepository.Entities;
+
+            query = query.Where(x => string.IsNullOrEmpty(name) || x.Name.Contains(name));
+            query = query.Include(x => x.Category).Include(c => c.ProductImages);
+
+            query = query.OrderBy(x => x.Name);
+
+            var assets = await query
+                .AsNoTracking()
+                .PaginateAsync(page, limit);
+
+            return new PagedResponseModel<ProductDto>
+            {
+                CurrentPage = assets.CurrentPage,
+                TotalPages = assets.TotalPages,
+                TotalItems = assets.TotalItems,
+                Items = _mapper.Map<IEnumerable<ProductDto>>(assets.Items)
+            };
+        }
+
 
     }
 }

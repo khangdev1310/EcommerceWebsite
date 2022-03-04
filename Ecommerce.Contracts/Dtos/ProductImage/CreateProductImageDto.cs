@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Contracts.Dtos
 {
-    public class ProductImageDto : BaseDto
+    public class CreateProductImageDto
     {
         
         public string ImageUrl { get; set; }
-        public Guid? ProductId { get; set; }
-        public ProductDto Product { get; set; }
+        public Guid ProductId { get; set; }
+        
     }
 }

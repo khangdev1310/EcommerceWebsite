@@ -18,6 +18,7 @@ namespace Ecommerce.Business
            services.AddAutoMapper(Assembly.GetExecutingAssembly());
            services.AddTransient<ICategoryService, CategoryService>();
            services.AddTransient<IProductService, ProductService>();
+           services.AddTransient<IProductImageService, ProductImageService>();
            services.AddTransient<IOrderService, OrderService>();
         }
     }

@@ -10,16 +10,17 @@ namespace Ecommerce.Business.Interfaces
     {
         Task<IEnumerable<ProductDto>> GetAllAsync();
 
-        /*Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int page, int limit);*/
+        Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int page, int limit);
 
         Task<ProductDto> GetByIdAsync(Guid id);
 
         Task<ProductDto> GetByNameAsync(string name);
 
-        Task<ProductDto> AddAsync(ProductDto ProductDto);
+        Task<ProductDto> AddAsync(CreateProductDto ProductDto);
 
         Task DeleteAsync(Guid id);
 
         Task UpdateAsync(ProductDto ProductDto);
+
     }
 }
