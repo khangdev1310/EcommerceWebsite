@@ -23,6 +23,7 @@ namespace Ecommerce.DataAccessor.Interfaces
 
         Task DeleteAsync(object id);
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
+        Task SoftDeleteAsync(object obj);
     }
 }
 

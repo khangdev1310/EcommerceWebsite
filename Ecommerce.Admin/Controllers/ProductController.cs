@@ -43,16 +43,16 @@ namespace Ecommerce.Admin.Controllers
             return Created(Endpoints.Product, asset);
 
         }
-        [HttpGet]
-        public async Task<IEnumerable<ProductDto>> GetAsync() { 
+        /*[HttpGet]
+        public async Task<IEnumerable<ProductDto>> GetAsync() {
             return await _productService.GetAllAsync();
-        }
+        }*/
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAssetAsync([FromRoute] Guid id)
         {
-            var ProductDto = await _productService.GetByIdAsync(id);
-            Ensure.Any.IsNotNull(ProductDto, nameof(ProductDto));
+            var newProduct = await _productService.GetByIdAsync(id);
+            Ensure.Any.IsNotNull(newProduct, nameof(newProduct));
             await _productService.DeleteAsync(id);
             return NoContent();
         }
@@ -65,5 +65,23 @@ namespace Ecommerce.Admin.Controllers
         public async Task<PagedResponseModel<ProductDto>>
             FindAsync(string name, int page = 1, int limit = 10)
             => await _productService.PagedQueryAsync(name, page, limit);
+
+        [HttpPost("picture")]
+        public async Task<ActionResult<IEnumerable<ProductImageDto>>> CreateProductPictureRangeAsync([FromBody] IEnumerable<CreateProductImageDto> newProductImageDtos)
+        {
+            Ensure.Any.IsNotNull(newProductImageDtos, nameof(newProductImageDtos));
+
+            var asset = await _productImageService.AddRangeAsync(newProductImageDtos);
+            return Created(Endpoints.Product, asset);
+        }
+
+        [HttpDelete("/soft/{id}")]
+        public async Task<ActionResult> SoftDeleteProductAsync([FromRoute] Guid id)
+        {
+            var categoryItem = await _productService.GetByIdAsync(id);
+            Ensure.Any.IsNotNull(categoryItem, nameof(categoryItem));
+            await _productService.SoftDeleteAsync(id);
+            return NoContent();
+        }
     }
 }

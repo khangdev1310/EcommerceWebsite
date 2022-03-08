@@ -21,6 +21,7 @@ namespace Ecommerce.Business.Interfaces
         Task DeleteAsync(Guid id);
 
         Task UpdateAsync(ProductDto ProductDto);
+        Task SoftDeleteAsync(Guid id);
 
     }
 }

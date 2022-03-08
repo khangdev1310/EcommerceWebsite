@@ -19,6 +19,7 @@ export default function AddCategory() {
   const navigate = useNavigate()
 
   // Start IMG file
+  
   const types = ['image/png', 'image/jpeg', 'image/jpg']
   const [file, setFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')

@@ -1,8 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { getAllProductsAsync } from '../../../features/Product/ProductSlice'
 
 export default function ProductList() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  // Get products
+  const { products } = useSelector((state) => state.product)
+
+  useEffect(() => {
+    dispatch(getAllProductsAsync({currentPage: 1, limit: 10}))
+  }, [])
+  
   return (
     <div className="main-content">
       <div className="page-header">
@@ -69,29 +80,19 @@ export default function ProductList() {
                 <tr>
                   <th>ID</th>
                   <th>Tên sản phẩm</th>
-                  <th>Hình ảnh</th>
                   <th>Danh mục</th>
                   <th>Mô tả ngắn</th>
                   <th>Giá</th>
                   <th>Tồn kho</th>
                   <th>Trạng thái</th>
+                  <th>Đặc điểm</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>#1</td>
                   <td>Home Decoration</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <img
-                        className="img-fluid rounded"
-                        src="/images/others/thumb-9.jpg"
-                        style={{ maxWidth: 60 }}
-                        alt
-                      />
-                      <h6 className="m-b-0 m-l-10">Gray Sofa</h6>
-                    </div>
-                  </td>
+
                   <td>Đồ trang trí nội thất</td>
                   <td>Cực xịn</td>
                   <td>$912.00</td>
@@ -99,10 +100,20 @@ export default function ProductList() {
                   <td>
                     <div className="d-flex align-items-center">
                       <div className="badge badge-success badge-dot m-r-10" />
-                      <div>In Stock</div>
+                      <div>Tồn kho</div>
                     </div>
                   </td>
+                  <td>
+                    <div className="d-flex align-items-center">
+                      <div className="badge badge-warning badge-dot m-r-10" />
+                      <div>Bình thường</div>
+                    </div>
+                  </td>
+
                   <td className="text-right">
+                    <button className="btn btn-tone btn-primary m-r-5">
+                      Xem chi tiết
+                    </button>
                     <button className="btn btn-tone btn-secondary m-r-5">
                       <i className="anticon anticon-edit" />
                     </button>

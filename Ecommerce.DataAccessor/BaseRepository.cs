@@ -72,5 +72,13 @@ namespace Ecommerce.DataAccessor
             await _dbContext.SaveChangesAsync();
             return entities;
         }
+
+        public async Task SoftDeleteAsync(object obj) {
+            var entity = await _dbContext.Set<T>().FindAsync(obj);
+            var property = entity.GetType().GetProperty("IsDeleted");
+            property.SetValue(entity, true);
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 }

@@ -1,26 +1,112 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
+import { AsyncGetAllCategories } from '../../../features/Category/CategorySlice'
+import { createProductAsync } from '../../../features/Product/ProductSlice'
+import { uploadImageToFirebaseAsync } from '../../../untils/firebase'
+import { SweetAlert } from '../../../untils/SweetAlert'
 
 export default function AddProduct() {
   const [productForm, setProductForm] = useState({
     name: '',
     desc: '',
     price: 0,
-    categoryId: null,
+    categoryId: '',
     quantity: 0,
     isFeatured: false,
-    status: '',
+    status: 'InStock',
+    productImageDtos: [],
   })
+  // Get category
+  const { categories } = useSelector((state) => state.category)
+  const [file, setFile] = useState(null)
+  const [previewUrl, setPreviewUrl] = useState('')
 
-  const handleChangeForm = () => {
-      console.log(productForm);
+  const [selectedFiles, setSelectedFiles] = useState([])
+  const [previewFiles, setPreviewFiles] = useState([])
+
+  const dispatch = useDispatch()
+  // Start Form
+  const handleChangeForm = (e) => {
+    setProductForm({ ...productForm, [e.target.name]: e.target.value })
   }
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault()
+    if (selectedFiles.length == 0) {
+      SweetAlert('error', 'Bạn chưa chọn hình ảnh để upload', 1500)
+      return
+    } else if (
+      !productForm.name ||
+      !productForm.desc ||
+      !productForm.price ||
+      !productForm.quantity ||
+      !productForm.categoryId
+    ) {
+      SweetAlert('error', 'Bạn chưa điền đủ thông tin', 1500)
+    } else {
+      const ImgUrls = []
+      selectedFiles.forEach((file) => {
+        ImgUrls.push(uploadImageToFirebaseAsync(file))
+      })
+      Promise.all(ImgUrls).then((urls) => {
+        dispatch(
+          createProductAsync({
+            ...productForm,
+            productImageDtos: urls.map((item) => ({
+              imageUrl: item,
+            })),
+          }),
+        )
+      })
+    }
+  }
+  // End Form
+
+  // Start IMG File
+  const types = ['image/png', 'image/jpeg', 'image/jpg']
+  const convertImgtoArray = (items) => {
+    const array = []
+    for (let i = 0; i < items.length; i++) {
+      array.push(items.item(i))
+    }
+    return array
+  }
+  const handleFileChange = (e) => {
+    const files = convertImgtoArray(e.target.files)
+    if (files.length > 5) {
+      SweetAlert('error', 'Không thể upload quá 5 hình', 1500)
+      return
+    }
+
+    if (files.map((file) => file.type).some((item) => !types.includes(item))) {
+      setPreviewFiles([])
+      SweetAlert('error', 'Không đúng định dạng ảnh', 1000)
+      return
+    }
+    files.forEach((item) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        setPreviewFiles((previewFiles) => [...previewFiles, reader.result])
+      }
+      reader.readAsDataURL(item)
+    })
+    setSelectedFiles(files)
+  }
+  // End IMG File
+
+  useEffect(() => {
+    dispatch(AsyncGetAllCategories())
+  }, [])
+  console.log(productForm)
+
   return (
     <div className="main-content">
-      <form onChange={handleChangeForm}>
+      <form>
         <div className="page-header no-gutters has-tab">
           <div className="d-md-flex m-b-15 align-items-center justify-content-between">
             <div className="m-b-15">
-              <button className="btn btn-primary">
+              <button className="btn btn-primary" onClick={handleSubmitForm}>
                 <i className="anticon anticon-save" />
                 <span>Lưu</span>
               </button>
@@ -34,16 +120,6 @@ export default function AddProduct() {
                 href="#product-edit-basic"
               >
                 Tạo sản phẩm
-              </a>
-            </li>
-           
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                data-toggle="tab"
-                href="#product-edit-description"
-              >
-                Chi tiết sản phẩm
               </a>
             </li>
           </ul>
@@ -61,6 +137,8 @@ export default function AddProduct() {
                     className="form-control"
                     id="productName"
                     placeholder="Nhập tên sản phẩm"
+                    name="name"
+                    onChange={handleChangeForm}
                   />
                 </div>
                 <div className="form-group">
@@ -72,6 +150,8 @@ export default function AddProduct() {
                     className="form-control"
                     id="productDesc"
                     placeholder="Nhập tên mô tả sản phẩm"
+                    name="desc"
+                    onChange={handleChangeForm}
                   />
                 </div>
                 <div className="form-group">
@@ -86,7 +166,9 @@ export default function AddProduct() {
                     className="form-control"
                     id="productPrice"
                     placeholder="Price"
-                    defaultValue="$ 199"
+                    defaultValue="199"
+                    name="price"
+                    onChange={handleChangeForm}
                   />
                 </div>
                 <div className="form-group">
@@ -96,13 +178,18 @@ export default function AddProduct() {
                   >
                     Danh mục sản phẩm
                   </label>
-                  <select className="custom-select" id="productCategory">
-                    <option value="meat" selected>
-                      Chọn danh mục
-                    </option>
-                    <option value="meat">Thịt</option>
-                    <option value="fruit">Hoa quả</option>
-                    <option value="vegetable">Rau củ</option>
+
+                  <select
+                    className="custom-select"
+                    name="categoryId"
+                    id="productCategory"
+                    onChange={handleChangeForm}
+                  >
+                    {categories.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
@@ -118,6 +205,8 @@ export default function AddProduct() {
                     id="productQuantity"
                     placeholder="Brand"
                     defaultValue="10"
+                    name="quantity"
+                    onChange={handleChangeForm}
                   />
                 </div>
                 <div className="form-group">
@@ -131,9 +220,14 @@ export default function AddProduct() {
                     <input
                       type="checkbox"
                       id="productFeatures"
-                      onChange={(e) => {
-                        console.log(e.target.checked)
-                      }}
+                      name="isFeatured"
+                      checked={productForm.isFeatured}
+                      onChange={(e) =>
+                        setProductForm({
+                          ...productForm,
+                          isFeatured: e.target.checked,
+                        })
+                      }
                     />
                     <label htmlFor="productFeatures" />
                   </div>
@@ -145,34 +239,48 @@ export default function AddProduct() {
                   >
                     Trạng thái sản phẩm
                   </label>
-                  <select className="custom-select" id="productStatus">
-                    <option value="inStock" selected>
-                      In Stock
+                  <select
+                    className="custom-select"
+                    id="productStatus"
+                    name="status"
+                    onChange={handleChangeForm}
+                  >
+                    <option value="InStock" defaultValue>
+                      Còn hàng
                     </option>
-                    <option value="outOfStock">Out of Stock</option>
+                    <option value="OutOfStock">Hết hàng</option>
                   </select>
                 </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="tab-pane fade" id="product-edit-description">
-            <div className="card">
-              <div className="card-body">
-                <div id="productDescription">
-                  <p>
-                    Special cloth alert. The key to more success is to have a
-                    lot of pillows. Surround yourself with angels, positive
-                    energy, beautiful people, beautiful souls, clean heart,
-                    angel. They will try to close the door on you, just open it.
-                    A major key, never panic. Don’t panic, when it gets crazy
-                    and rough, don’t panic, stay calm. They key is to have every
-                    key, the key to open every door.The other day the grass was
-                    brown, now it’s green because I ain’t give up. Never
-                    surrender. Lion! I’m up to something. Always remember in the
-                    jungle there’s a lot of they in there, after you overcome
-                    they, you will make it to paradise.
-                  </p>
+                <div className="form-group">
+                  <label
+                    className="font-weight-semibold m-r-5"
+                    htmlFor="productDesc"
+                  >
+                    Chọn hình ảnh
+                  </label>
+                  <input
+                    type="file"
+                    name="productImageDtos"
+                    multiple
+                    onChange={handleFileChange}
+                  />
+                  <div>
+                    {previewFiles.length > 0 && (
+                      <>
+                        {previewFiles.map((item, index) => {
+                          return (
+                            <img
+                              src={item}
+                              key={index}
+                              alt="preview"
+                              width={100}
+                              height={100}
+                            />
+                          )
+                        })}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

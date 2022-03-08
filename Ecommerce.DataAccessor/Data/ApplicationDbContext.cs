@@ -21,5 +21,24 @@ namespace Ecommerce.DataAccessor.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Category>()
+                .HasMany<Product>(e => e.Products)
+                .WithOne(p => p.Category)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder
+                .Entity<Product>()
+                .HasMany<ProductImage>(e => e.ProductImages)
+                .WithOne(p => p.Product)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+
+        }
+
     }
+
+
 }
