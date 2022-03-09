@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Contracts.Dtos
 {
-    public class UpdateProductDto
+    public class CreateProductDto
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Desc { get; set; }

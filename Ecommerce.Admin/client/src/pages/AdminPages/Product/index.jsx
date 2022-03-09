@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { getAllProductsAsync } from '../../../features/Product/ProductSlice'
+import Swal from 'sweetalert2'
+import { deleteProductAsync, getAllProductsAsync, setDeleteProduct } from '../../../features/Product/ProductSlice'
+
 
 export default function ProductList() {
   const navigate = useNavigate()
@@ -10,15 +12,38 @@ export default function ProductList() {
   // Get products
   const { products } = useSelector((state) => state.product)
 
-  useEffect(() => {
-    dispatch(getAllProductsAsync({ currentPage: 1, limit: 10 }))
-  }, [])
-
+  // View product
   const handleViewProduct = (id) => {
     const newProduct = products.find(p => p.id === id);
     navigate('/admin/product/view', { state: newProduct })
   }
 
+  // Delete product
+  const handleDeleteProduct = (item) => {
+    console.log(item);
+    dispatch(setDeleteProduct(item));
+    Swal.fire({
+      title: 'Lưu ý',
+      text: 'Bạn có muốn xóa sản phẩm này không',
+      icon: 'warning',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteProductAsync({ id: item.id }))
+      }
+      else {
+        Swal.fire({
+          title: "Hủy bỏ",
+          icon: "info",
+          timer: 1000
+        })
+      }
+    })
+  }
+  
+  useEffect(() => {
+    dispatch(getAllProductsAsync({ currentPage: 1, limit: 10 }))
+  }, [])
   return (
     <div className="main-content">
       <div className="page-header">
@@ -128,7 +153,7 @@ export default function ProductList() {
                         <button className="btn btn-tone btn-secondary m-r-5">
                           <i className="anticon anticon-edit" />
                         </button>
-                        <button className="btn btn-tone btn-success m-r-5">
+                        <button className="btn btn-tone btn-success m-r-5" onClick={() => handleDeleteProduct(item)}>
                           <i className="anticon anticon-delete" />
                         </button>
                       </td>

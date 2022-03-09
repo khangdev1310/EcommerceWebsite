@@ -43,6 +43,13 @@ namespace Ecommerce.Admin.Controllers
             return Created(Endpoints.Product, asset);
 
         }
+        [HttpPut]
+        public async Task<ActionResult> UpdateAsync([FromBody] UpdateProductDto newProductDto)
+        {
+            Ensure.Any.IsNotNull(newProductDto, nameof(newProductDto));
+            await _productService.UpdateAsync(newProductDto);
+            return NoContent();
+        }
         /*[HttpGet]
         public async Task<IEnumerable<ProductDto>> GetAsync() {
             return await _productService.GetAllAsync();

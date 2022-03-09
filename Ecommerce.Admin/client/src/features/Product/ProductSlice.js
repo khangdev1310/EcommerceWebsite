@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { deleteObject } from 'firebase/storage'
+import { deleteObject, ref } from 'firebase/storage'
 import axiosClient from '../../untils/axiosClient'
 import { storage } from '../../untils/firebase'
+import exactFirebaseLink from '../../untils/getFirebaseLink'
 import { SweetAlert } from '../../untils/SweetAlert'
 
 const initialState = {
   products: [],
   product: null,
+  productDeleteTemp: null,
   currentPage: 1,
   totalPages: 1,
   totalItems: 0,
@@ -18,15 +20,14 @@ export const getAllProductsAsync = createAsyncThunk(
   'products/getAllproducts',
   async (values, { rejectWithValue }) => {
     try {
-    
       const response = await axiosClient.get(`/product/find`, null, {
         params: {
           page: values.currentPage,
           limit: values.limit,
         },
       })
-      
-      return response.data;
+
+      return response.data
     } catch (error) {
       return rejectWithValue(error.response.data)
     }
@@ -43,10 +44,28 @@ export const createProductAsync = createAsyncThunk(
     }
   },
 )
+
+// Delete Product
+export const deleteProductAsync = createAsyncThunk(
+  'products/deleteProduct',
+  async (values, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.delete(`/product/${values.id}`)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  },
+)
+
 export const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+    setDeleteProduct: (state, action) => {
+      state.productDeleteTemp = action.payload
+    },
+  },
   extraReducers: {
     [getAllProductsAsync.pending]: (state, action) => {
       state.loading = true
@@ -67,13 +86,49 @@ export const productSlice = createSlice({
     },
     [createProductAsync.fulfilled]: (state, action) => {
       state.loading = false
-      SweetAlert("success","Thêm sản phẩm thành công", 1500)
+      SweetAlert('success', 'Thêm sản phẩm thành công', 1500)
     },
     [createProductAsync.rejected]: (state, action) => {
       state.loading = false
-      SweetAlert("error","Thêm sản phẩm thất bại! Vui lòng thử lại", 1000)
+      SweetAlert('error', 'Thêm sản phẩm thất bại! Vui lòng thử lại', 1000)
+    },
+    [deleteProductAsync.pending]: (state, action) => {
+      state.loading = true
+    },
+    [deleteProductAsync.fulfilled]: (state, action) => {
+      state.loading = false
+      state.products = state.products.filter(
+        (p) => p.id !== state.productDeleteTemp.id,
+      )
+
+      SweetAlert('success', 'Xóa sản phẩm thành công', 1500)
+
+      const deletePromise = []
+      state.productDeleteTemp.productImages.forEach((image) => {
+        const beforeLink = exactFirebaseLink(image.imageUrl)
+        if (beforeLink !== null) {
+          const desertRef = ref(storage, beforeLink)
+          deletePromise.push(deleteObject(desertRef))
+        }
+      })
+
+      // Async delete
+      Promise.all(deletePromise)
+        .then(() => {
+          console.log('Success delete product')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      state.productDeleteTemp = null
+    },
+    [deleteProductAsync.rejected]: (state) => {
+      state.loading = false
+      SweetAlert('error', 'Xóa sản phẩm thất bại', 1000)
     },
   },
 })
 
-export default productSlice.reducer;
+export const { setDeleteProduct } = productSlice.actions
+export default productSlice.reducer
