@@ -37,6 +37,27 @@ namespace Ecommerce.DataAccessor.Data
 
 
         }
+        public override int SaveChanges()
+        {
+            foreach (var changedEntity in ChangeTracker.Entries())
+            {
+                if (changedEntity.Entity is BaseEntity entity)
+                {
+                    switch (changedEntity.State)
+                    {
+                        case EntityState.Added:
+                            entity.CreatedDate = DateTime.Now;
+                            entity.UpdatedDate = DateTime.Now;
+                            break;
+                        case EntityState.Modified:
+                            Entry(entity).Property(x => x.CreatedDate).IsModified = false;
+                            entity.UpdatedDate = DateTime.Now;
+                            break;
+                    }
+                }
+            }
+            return base.SaveChanges();
+        }
 
     }
 

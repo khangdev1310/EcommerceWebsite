@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import ProductList from './pages/AdminPages/Product/index';
 import AddProduct from './pages/AdminPages/Product/AddProduct'
 import ViewCategory from './pages/AdminPages/Category/ViewCategory'
+import ViewProduct from './pages/AdminPages/Product/ViewProduct'
+import UpdateCategory from './pages/AdminPages/Category/UpdateCategory'
 
 export default function Router() {
   return useRoutes([
@@ -40,6 +42,10 @@ export default function Router() {
           path: 'create',
           element: <AddProduct />,
         },
+        {
+          path: 'view',
+          element: <ViewProduct/>
+        }
        
       ]
     },
@@ -55,6 +61,10 @@ export default function Router() {
           path: 'view',
           element: <ViewCategory />,
         },
+        {
+          path: 'edit',
+          element: <UpdateCategory/>
+        }
       ]
     }
     

@@ -20,6 +20,7 @@ namespace Rookie.Ecom.Business
                 .ForMember(d => d.Products, t => t.Ignore());
 
             CreateMap<CreateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
+            CreateMap<UpdateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
 
             CreateMap<ProductDto, Product>(memberList: AutoMapper.MemberList.None);
             CreateMap<CreateProductDto, Product>(memberList: AutoMapper.MemberList.None);

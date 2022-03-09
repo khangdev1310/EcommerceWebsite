@@ -47,7 +47,14 @@ export default function CategoryList() {
     })
   }
 
-  console.log('Hello')
+
+  // Start Update category 
+  const handleEditCategory = (item) => {
+    const editCategory = categories.find((c) => c.id === item.id)
+    navigate('/admin/category/edit', { state: editCategory })
+  }
+  // End Update category 
+  
 
   useEffect(() => {
     dispatch(AsyncGetAllCategories())
@@ -153,9 +160,10 @@ export default function CategoryList() {
                               className="btn btn-tone btn-primary m-r-5"
                               onClick={() => handleViewCategory(item.id)}
                             >
-                              View
+                              <i className="anticon anticon-eye"></i>
                             </button>
-                            <button className="btn btn-tone btn-secondary m-r-5">
+                            <button className="btn btn-tone btn-secondary m-r-5"
+                            onClick={() => handleEditCategory(item)}>
                               <i className="anticon anticon-edit" />
                             </button>
                             <button

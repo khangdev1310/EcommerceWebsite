@@ -30,6 +30,16 @@ namespace Ecommerce.Admin.Controllers
             return Created(Endpoints.Category, asset);
             
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateAsync([FromBody] UpdateCategoryDto categoryDto)
+        {
+            Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
+            await _categoryService.UpdateAsync(categoryDto);
+
+            return NoContent();
+        }
+
         [HttpGet]
         public async Task<IEnumerable<CategoryDto>> GetAsync() { 
             return await _categoryService.GetAllAsync();

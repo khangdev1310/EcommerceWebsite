@@ -11,9 +11,14 @@ export default function ProductList() {
   const { products } = useSelector((state) => state.product)
 
   useEffect(() => {
-    dispatch(getAllProductsAsync({currentPage: 1, limit: 10}))
+    dispatch(getAllProductsAsync({ currentPage: 1, limit: 10 }))
   }, [])
-  
+
+  const handleViewProduct = (id) => {
+    const newProduct = products.find(p => p.id === id);
+    navigate('/admin/product/view', { state: newProduct })
+  }
+
   return (
     <div className="main-content">
       <div className="page-header">
@@ -89,39 +94,46 @@ export default function ProductList() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>#1</td>
-                  <td>Home Decoration</td>
+                {products &&
+                  products.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>#{index + 1}</td>
+                      <td>{item.name}</td>
 
-                  <td>Đồ trang trí nội thất</td>
-                  <td>Cực xịn</td>
-                  <td>$912.00</td>
-                  <td>20</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <div className="badge badge-success badge-dot m-r-10" />
-                      <div>Tồn kho</div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <div className="badge badge-warning badge-dot m-r-10" />
-                      <div>Bình thường</div>
-                    </div>
-                  </td>
+                      <td>{item.category.name}</td>
+                      <td>{item.desc}</td>
+                      <td>${item.price}</td>
+                      <td>{item.quantity}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div className="badge badge-success badge-dot m-r-10" />
+                          <div>{item.status}</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div className="badge badge-warning badge-dot m-r-10" />
+                          {item.isFeatured ? (
+                            <div>Hàng đặc biệt</div>
+                          ) : (
+                            <div>Bình thường</div>
+                          )}
+                        </div>
+                      </td>
 
-                  <td className="text-right">
-                    <button className="btn btn-tone btn-primary m-r-5">
-                      Xem chi tiết
-                    </button>
-                    <button className="btn btn-tone btn-secondary m-r-5">
-                      <i className="anticon anticon-edit" />
-                    </button>
-                    <button className="btn btn-tone btn-success m-r-5">
-                      <i className="anticon anticon-delete" />
-                    </button>
-                  </td>
-                </tr>
+                      <td className="text-right">
+                        <button className="btn btn-tone btn-primary m-r-5" onClick={() => handleViewProduct(item.id)}>
+                        <i className="anticon anticon-eye"></i>
+                        </button>
+                        <button className="btn btn-tone btn-secondary m-r-5">
+                          <i className="anticon anticon-edit" />
+                        </button>
+                        <button className="btn btn-tone btn-success m-r-5">
+                          <i className="anticon anticon-delete" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
             <div className="row">
