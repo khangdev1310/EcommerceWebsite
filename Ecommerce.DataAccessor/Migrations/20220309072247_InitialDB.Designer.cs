@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220224075509_AddProImageAndRatingAndOrderAndOrderDetail")]
-    partial class AddProImageAndRatingAndOrderAndOrderDetail
+    [Migration("20220309072247_InitialDB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,11 @@ namespace Ecommerce.DataAccessor.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Image_url");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -175,6 +180,9 @@ namespace Ecommerce.DataAccessor.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
@@ -284,7 +292,8 @@ namespace Ecommerce.DataAccessor.Migrations
                 {
                     b.HasOne("Ecommerce.DataAccessor.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.Navigation("Category");
                 });
@@ -293,7 +302,8 @@ namespace Ecommerce.DataAccessor.Migrations
                 {
                     b.HasOne("Ecommerce.DataAccessor.Entities.Product", "Product")
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.Navigation("Product");
                 });

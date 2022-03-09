@@ -290,7 +290,8 @@ namespace Ecommerce.DataAccessor.Migrations
                 {
                     b.HasOne("Ecommerce.DataAccessor.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Category");
                 });
@@ -299,7 +300,8 @@ namespace Ecommerce.DataAccessor.Migrations
                 {
                     b.HasOne("Ecommerce.DataAccessor.Entities.Product", "Product")
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Product");
                 });

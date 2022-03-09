@@ -6,6 +6,7 @@ import { ref, deleteObject } from 'firebase/storage'
 import { storage } from '../../untils/firebase'
 const initialState = {
   categories: [],
+  category: null,
   loading: null,
   error: null,
   categoryDeleteTemp: null,
@@ -29,7 +30,18 @@ export const AsyncCreateCategories = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await axiosClient.post('category', values)
+      return response
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  },
+)
 
+export const AsyncUpdateCategories = createAsyncThunk(
+  'category/UpdateCategory',
+  async (values, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.put('category', values)
       return response
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -57,6 +69,9 @@ const categorySlice = createSlice({
     setDeleteCategory: (state, action) => {
       state.categoryDeleteTemp = action.payload
     },
+    setUpdateCategory: (state, action) => {
+      state.category = action.payload
+    },
   },
   extraReducers: {
     [AsyncGetAllCategories.pending]: (state, action) => {
@@ -80,6 +95,23 @@ const categorySlice = createSlice({
       SweetAlert('error', 'Thêm danh mục thất bại', 1000)
     },
 
+    [AsyncUpdateCategories.pending]: (state, action) => {
+      state.loading = true
+    },
+    [AsyncUpdateCategories.fulfilled]: (state, action) => {
+      state.loading = false
+      const index = state.categories.findIndex(
+        (c) => c.id === state.category.id,
+      )
+      state.categories[index] = state.category
+      SweetAlert('success', 'Cập nhật thành công', 1500)
+    },
+    [AsyncUpdateCategories.rejected]: (state) => {
+      state.loading = false
+
+      SweetAlert('error', 'Cập nhật thất bại', 1000)
+    },
+
     [AsyncDeleteCategories.pending]: (state) => {
       state.loading = true
     },
@@ -91,7 +123,6 @@ const categorySlice = createSlice({
 
       // Xóa ảnh firebase
       const objLink = exactFirebaseLink(state.categoryDeleteTemp.imageUrl)
-     
 
       if (objLink) {
         const tempRef = ref(storage, objLink)
@@ -113,5 +144,5 @@ const categorySlice = createSlice({
     },
   },
 })
-export const { setDeleteCategory } = categorySlice.actions
+export const { setDeleteCategory, setUpdateCategory } = categorySlice.actions
 export default categorySlice.reducer

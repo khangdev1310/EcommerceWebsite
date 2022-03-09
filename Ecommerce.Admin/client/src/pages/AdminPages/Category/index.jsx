@@ -5,6 +5,7 @@ import {
   AsyncDeleteCategories,
   AsyncGetAllCategories,
   setDeleteCategory,
+  setUpdateCategory,
 } from '../../../features/Category/CategorySlice'
 import Swal from 'sweetalert2'
 import {formatDateTime} from '../../../untils/formatDateTime'
@@ -12,6 +13,7 @@ import {formatDateTime} from '../../../untils/formatDateTime'
 export default function CategoryList() {
   const navigate = useNavigate()
   const { categories } = useSelector((state) => state.category)
+  
   const dispatch = useDispatch()
 
   // Search item with the name\
@@ -51,6 +53,7 @@ export default function CategoryList() {
   // Start Update category 
   const handleEditCategory = (item) => {
     const editCategory = categories.find((c) => c.id === item.id)
+    dispatch(setUpdateCategory(item))
     navigate('/admin/category/edit', { state: editCategory })
   }
   // End Update category 
@@ -58,7 +61,7 @@ export default function CategoryList() {
 
   useEffect(() => {
     dispatch(AsyncGetAllCategories())
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="main-content">

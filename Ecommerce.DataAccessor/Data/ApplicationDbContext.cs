@@ -27,13 +27,13 @@ namespace Ecommerce.DataAccessor.Data
                 .Entity<Category>()
                 .HasMany<Product>(e => e.Products)
                 .WithOne(p => p.Category)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder
                 .Entity<Product>()
                 .HasMany<ProductImage>(e => e.ProductImages)
                 .WithOne(p => p.Product)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         }

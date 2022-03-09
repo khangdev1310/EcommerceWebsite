@@ -1,23 +1,31 @@
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage'
 import React, { useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { storage, uploadImageToFirebaseAsync } from '../../../untils/firebase'
 import { SweetAlert } from '../../../untils/SweetAlert'
 import exactFirebaseLink from '../../../untils/getFirebaseLink'
+import {
+  AsyncUpdateCategories,
+  setUpdateCategory,
+} from '../../../features/Category/CategorySlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function UpdateCategory() {
   const { state } = useLocation()
-  const [categoryForm, setCategoryForm] = useState({
-    id: state.id,
-    name: state.name,
-    desc: state.desc,
-    imageUrl: state.imageUrl,
-  })
-  const [previewUrl, setPreviewUrl] = useState(state?.imageUrl)
-  const [file, setFile] = useState(null)
-  const types = ['image/png', 'image/jpeg', 'image/jpg']
+  const navigate = useNavigate()
 
-  console.log(categoryForm)
+  //   State initial
+  const [file, setFile] = useState(null)
+  const [previewUrl, setPreviewUrl] = useState(state?.imageUrl)
+  const types = ['image/png', 'image/jpeg', 'image/jpg']
+  const { category } = useSelector((state) => state.category)
+
+  const dispatch = useDispatch()
 
   //   Start Form
   const handleFileChange = (e) => {
@@ -35,10 +43,13 @@ export default function UpdateCategory() {
     }
   }
   const handleChangeValueForm = (e) => {
-    setCategoryForm({ ...categoryForm, [e.target.name]: e.target.value })
+    dispatch(
+      setUpdateCategory({ ...category, [e.target.name]: e.target.value }),
+    )
   }
 
-  const handleEditCategory = () => {
+  const handleEditCategory = (e) => {
+    e.preventDefault()
     if (file) {
       const storageRef = ref(
         storage,
@@ -47,27 +58,55 @@ export default function UpdateCategory() {
           file.name,
       )
       const uploadTask = uploadBytesResumable(storageRef, file)
-      uploadTask.on('state_changed', (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      },(error) => {
-          console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(() => {
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        },
+        (error) => {
+          console.log(error)
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
             const beforeUrlLink = exactFirebaseLink(state?.imageUrl)
-            if(beforeUrlLink != null) {
-                const desertRef = ref(storage, beforeUrlLink);
-                deleteObject(desertRef).then(() => {
-                    console.log("success");
-                }).catch((error) => {
-                    console.log(error);
+            if (beforeUrlLink != null) {
+              const desertRef = ref(storage, beforeUrlLink)
+              deleteObject(desertRef)
+                .then(() => {
+                  console.log('success')
+                })
+                .catch((error) => {
+                  console.log(error)
                 })
             }
 
+            dispatch(
+              AsyncUpdateCategories({
+                id: category.id,
+                name: category.name,
+                desc: category.desc,
+                imageUrl: downloadUrl,
+              }),
+            )
 
-            
-        })
-      })
+            dispatch(setUpdateCategory({ ...category, imageUrl: downloadUrl }))
+            navigate('/admin/category')
+          })
+        },
+      )
+    } else if (category.name && category.desc) {
+      dispatch(
+        AsyncUpdateCategories({
+          id: category.id,
+          name: category.name,
+          desc: category.desc,
+          imageUrl: category.imageUrl,
+        }),
+      )
+      navigate('/admin/category')
+    } else {
+      SweetAlert('error', 'Vui lòng nhập đầy đủ thông tin', 1500)
     }
   }
   //   End Form

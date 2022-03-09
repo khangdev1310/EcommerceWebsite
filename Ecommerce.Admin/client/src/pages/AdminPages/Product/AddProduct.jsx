@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { NavLink, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { AsyncGetAllCategories } from '../../../features/Category/CategorySlice'
 import { createProductAsync } from '../../../features/Product/ProductSlice'
@@ -25,6 +26,7 @@ export default function AddProduct() {
   const [selectedFiles, setSelectedFiles] = useState([])
   const [previewFiles, setPreviewFiles] = useState([])
 
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   // Start Form
   const handleChangeForm = (e) => {
@@ -58,6 +60,7 @@ export default function AddProduct() {
             })),
           }),
         )
+        navigate('/admin/product')
       })
     }
   }
@@ -166,7 +169,7 @@ export default function AddProduct() {
                     className="form-control"
                     id="productPrice"
                     placeholder="Price"
-                    defaultValue="199"
+                    defaultValue="0"
                     name="price"
                     onChange={handleChangeForm}
                   />
@@ -185,6 +188,7 @@ export default function AddProduct() {
                     id="productCategory"
                     onChange={handleChangeForm}
                   >
+                    <option value="">Chọn danh mục</option>
                     {categories.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}
@@ -286,6 +290,9 @@ export default function AddProduct() {
             </div>
           </div>
         </div>
+        <NavLink to="/admin/category" style={{ padding: '0.5rem' }}>
+          Back to category
+        </NavLink>
       </form>
     </div>
   )

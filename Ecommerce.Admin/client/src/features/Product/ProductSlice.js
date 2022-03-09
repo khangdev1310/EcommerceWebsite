@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { deleteObject } from 'firebase/storage'
 import axiosClient from '../../untils/axiosClient'
 import { storage } from '../../untils/firebase'
+import { SweetAlert } from '../../untils/SweetAlert'
 
 const initialState = {
   products: [],
@@ -60,6 +61,17 @@ export const productSlice = createSlice({
     [getAllProductsAsync.rejected]: (state, action) => {
       state.loading = false
       state.error = action.error
+    },
+    [createProductAsync.pending]: (state, action) => {
+      state.loading = true
+    },
+    [createProductAsync.fulfilled]: (state, action) => {
+      state.loading = false
+      SweetAlert("success","Thêm sản phẩm thành công", 1500)
+    },
+    [createProductAsync.rejected]: (state, action) => {
+      state.loading = false
+      SweetAlert("error","Thêm sản phẩm thất bại! Vui lòng thử lại", 1000)
     },
   },
 })

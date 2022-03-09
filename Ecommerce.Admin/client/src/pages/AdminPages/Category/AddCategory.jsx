@@ -7,7 +7,6 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '../../../untils/firebase'
 import { SweetAlert } from '../../../untils/SweetAlert'
 
-
 export default function AddCategory() {
   const [categoryForm, setCategoryForm] = useState({
     name: '',
@@ -19,7 +18,7 @@ export default function AddCategory() {
   const navigate = useNavigate()
 
   // Start IMG file
-  
+
   const types = ['image/png', 'image/jpeg', 'image/jpg']
   const [file, setFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
@@ -36,8 +35,8 @@ export default function AddCategory() {
       }
       reader.readAsDataURL(file)
     } else {
-      SweetAlert("error","Không đúng định dạng ảnh",1500)
-      setPreviewUrl("");
+      SweetAlert('error', 'Không đúng định dạng ảnh', 1500)
+      setPreviewUrl('')
     }
   }
 
@@ -59,9 +58,7 @@ export default function AddCategory() {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         },
         // if failed upload img
-        (error) => {
-          
-        },
+        (error) => {},
 
         // Handle success upload on complete
         () => {
@@ -90,8 +87,6 @@ export default function AddCategory() {
   }
   //End FORM
 
-  
-
   return (
     <div className="main-content">
       <form>
@@ -115,16 +110,6 @@ export default function AddCategory() {
                 href="#product-edit-basic"
               >
                 Tạo danh mục
-              </a>
-            </li>
-
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                data-toggle="tab"
-                href="#product-edit-description"
-              >
-                Chi tiết danh mục
               </a>
             </li>
           </ul>
@@ -189,28 +174,6 @@ export default function AddCategory() {
                       />
                     )}
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="tab-pane fade" id="product-edit-description">
-            <div className="card">
-              <div className="card-body">
-                <div id="productDescription">
-                  <p>
-                    Special cloth alert. The key to more success is to have a
-                    lot of pillows. Surround yourself with angels, positive
-                    energy, beautiful people, beautiful souls, clean heart,
-                    angel. They will try to close the door on you, just open it.
-                    A major key, never panic. Don’t panic, when it gets crazy
-                    and rough, don’t panic, stay calm. They key is to have every
-                    key, the key to open every door.The other day the grass was
-                    brown, now it’s green because I ain’t give up. Never
-                    surrender. Lion! I’m up to something. Always remember in the
-                    jungle there’s a lot of they in there, after you overcome
-                    they, you will make it to paradise.
-                  </p>
                 </div>
               </div>
             </div>
