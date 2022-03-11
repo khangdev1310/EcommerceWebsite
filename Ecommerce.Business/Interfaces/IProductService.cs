@@ -22,6 +22,7 @@ namespace Ecommerce.Business.Interfaces
 
         Task UpdateAsync(UpdateProductDto ProductDto);
         Task SoftDeleteAsync(Guid id);
+        Task<List<ProductDto>> GetRelatedProduct(Guid categoryId, int num);
 
     }
 }

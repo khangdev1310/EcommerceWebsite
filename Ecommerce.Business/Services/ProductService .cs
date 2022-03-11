@@ -54,15 +54,10 @@ namespace Ecommerce.Business.Services
 
         public async Task<ProductDto> GetByIdAsync(Guid id)
         {
-            // map roles and users: collection (roleid, userid)
-            // upsert: delete, update, insert
-            // input vs db
-            // input-y vs db-no => insert
-            // input-n vs db-yes => delete
-            // input-y vs db-y => update
-            // unique, distinct, no-duplicate
-            var Product = await _baseRepository.GetByIdAsync(id);
-            return _mapper.Map<ProductDto>(Product);
+            IQueryable<Product> query = _baseRepository.Entities;
+            query = query.Where(Product => Product.Id == id).Include(p => p.Category).Include(p => p.ProductImages).OrderBy(p => p.Name);   
+            Product product = await query.FirstOrDefaultAsync();
+            return _mapper.Map<ProductDto>(product);
         }
 
         public async Task<ProductDto> GetByNameAsync(string name)
@@ -96,6 +91,13 @@ namespace Ecommerce.Business.Services
         public async Task SoftDeleteAsync(Guid id)
         {
             await _baseRepository.SoftDeleteAsync(id);
+        }
+
+        public async Task<List<ProductDto>> GetRelatedProduct(Guid categoryId,int num)
+        {
+            var query = _baseRepository.Entities;
+            List<Product> products = await query.Where(p=> p.CategoryId == categoryId).Include(p => p.Category).Include(p => p.ProductImages).OrderByDescending(p => p.Price).Take(num).ToListAsync();
+            return _mapper.Map<List<ProductDto>>(products);
         }
 
 
