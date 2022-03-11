@@ -1,5 +1,6 @@
 using Ecommerce.Business.Interfaces;
 using Ecommerce.Contracts.Dtos;
+using Ecommerce.Customer.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -15,6 +16,8 @@ namespace Ecommerce.Customer.Pages.Product
         public ProductDto ProductDetail { get; set; }
         public List<ProductDto> RelatedProducts { get; set; }
         public List<CategoryDto> Categories { get; set; }
+        public List<ProductItemCartDto> Cart { get; set; }
+        public int ProductQty { get; set; } = 1;
 
 
         public DetailsModel(IProductService productService, ICategoryService categoryService)
@@ -23,7 +26,7 @@ namespace Ecommerce.Customer.Pages.Product
             _categoryService = categoryService;
         }
 
-        public async Task<ActionResult> OnGet(Guid id)
+        public async Task<ActionResult> OnGetAsync(Guid id)
         {
             ProductDetail = await _productService.GetByIdAsync(id);
             RelatedProducts = await _productService.GetRelatedProduct(ProductDetail.CategoryId, 4);
@@ -34,6 +37,58 @@ namespace Ecommerce.Customer.Pages.Product
                 return NotFound();
             }
             return Page();
+        }
+
+        public async Task<ActionResult> OnPostCartList(Guid id, int ProductQty)
+        {
+            ProductDetail = await _productService.GetByIdAsync(id);
+            if(ProductDetail != null)
+            {
+                Cart = SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContext.Session, "cart");
+                if(Cart == null)
+                {
+                    Cart = new List<ProductItemCartDto>
+                    {
+                        new ProductItemCartDto
+                        {
+                            Product = ProductDetail,
+                            Quantity = ProductQty
+                        }
+                    };
+                }
+                else
+                {
+                    int index = Exists(Cart, ProductDetail.Id);
+                    if(index == -1)
+                    {
+                        Cart.Add(new ProductItemCartDto
+                        {
+                            Product = ProductDetail,
+                            Quantity = ProductQty
+                        });
+                    }
+                    else
+                    {
+                        Cart[index].Quantity = ProductQty; 
+                    }
+                }
+                SessionHelper.SetObjectAsJson(HttpContext.Session,"cart",Cart);
+                return RedirectToPage($"/Product/Index");
+            }
+
+            return NotFound();
+        }
+
+        private static int Exists(List<ProductItemCartDto> cart, Guid productId)
+        {
+            for (int i = 0; i < cart.Count; i++)
+            {
+                if(cart[i].Product.Id == productId)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
     }

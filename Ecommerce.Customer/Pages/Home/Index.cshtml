@@ -165,7 +165,7 @@
                                         <div class="col-xl-3 col-lg-4 col-sm-6 pt-6 pt-xl-0">
                                         <div class="product-item">
                                             <div class="product-img img-zoom-effect">
-                                                <a href="single-product.html">
+                                                <a asp-page="/Product/Details" asp-route-id="@item.Id">
                                                     <img style="width: 270px; height: 190px" class="img-full" src="@(item.ProductImages.Count > 0 ? @item.ProductImages.ElementAt(0).ImageUrl : null)" alt="Product Images">
                                                 </a>
                                                 <div class="product-add-action">

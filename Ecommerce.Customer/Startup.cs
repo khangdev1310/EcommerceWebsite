@@ -1,9 +1,11 @@
 using Ecommerce.Business;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ namespace Ecommerce.Customer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
             services.AddRazorPages();
             services.AddBusinessLayer(Configuration);
             services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -33,6 +36,8 @@ namespace Ecommerce.Customer
                 option.Conventions.AddPageRoute("/Home/Contact", "Contact");
                 
             });
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,13 +54,14 @@ namespace Ecommerce.Customer
                 app.UseHsts();
             }
 
+
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
             
+
             //Use status to create error page
             app.UseStatusCodePages();
             app.UseStatusCodePagesWithRedirects("/Errors/Error{0}");
