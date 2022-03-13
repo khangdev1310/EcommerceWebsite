@@ -5,12 +5,14 @@
 @{
     List<ProductItemCartDto> Cart = Helpers.SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContextAccessor.HttpContext.Session, "cart");
     int total = 0;
+    decimal TotalMoney = 0;
     if(Cart != null)
     {
         total = Cart.Count;
+        TotalMoney = Cart.Sum(i => i.Quantity * i.Product.Price);
     }
 
-    var TotalMoney = Cart.Sum(i => i.Quantity * i.Product.Price);
+    
 
 
 }
