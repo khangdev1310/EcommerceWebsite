@@ -1,4 +1,6 @@
 using Ecommerce.Business;
+using Ecommerce.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,9 +28,11 @@ namespace Ecommerce.Customer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddSession();
             services.AddRazorPages();
             services.AddBusinessLayer(Configuration);
+            services.AddIdentityLayer(Configuration);
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddMvc().AddRazorPagesOptions(option =>
             {
@@ -38,6 +42,34 @@ namespace Ecommerce.Customer
             });
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+               .AddCookie("Cookies", options =>
+               {
+                   options.AccessDeniedPath = "/Errors/Error403";
+               })
+               .AddOpenIdConnect("oidc", options =>
+               {
+                   options.Authority = "https://localhost:5001";
+
+                   options.ClientId = "mvc";
+                   options.ClientSecret = "secret";
+                   options.ResponseType = "code";
+                   options.UsePkce = true;
+
+                   options.Scope.Add("profile");
+                   options.Scope.Add("offline_access");
+
+                   options.Scope.Add("roles");
+                   options.ClaimActions.MapJsonKey("role", "role", "role");
+                   options.TokenValidationParameters.RoleClaimType = "role";
+                   options.GetClaimsFromUserInfoEndpoint = true;
+                   options.SaveTokens = true;
+               })
+               ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +91,7 @@ namespace Ecommerce.Customer
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             
 

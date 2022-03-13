@@ -1,6 +1,7 @@
 ﻿using Ecommerce.Business.Interfaces;
 using Ecommerce.Business.Services;
 using Ecommerce.DataAccessor;
+using Ecommerce.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,10 +16,12 @@ namespace Ecommerce.Business
         public static void AddBusinessLayer(this IServiceCollection services, IConfiguration configuration )
         {
            services.AddDataAccessorLayer(configuration);
+           services.AddIdentityLayer(configuration);
            services.AddAutoMapper(Assembly.GetExecutingAssembly());
            services.AddTransient<ICategoryService, CategoryService>();
            services.AddTransient<IProductService, ProductService>();
            services.AddTransient<IProductImageService, ProductImageService>();
+
            services.AddTransient<IOrderService, OrderService>();
         }
     }

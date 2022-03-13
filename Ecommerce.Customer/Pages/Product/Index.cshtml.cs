@@ -1,6 +1,7 @@
 using Ecommerce.Business.Interfaces;
 using Ecommerce.Contracts;
 using Ecommerce.Contracts.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Customer.Pages.Product
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly IProductService _productService;

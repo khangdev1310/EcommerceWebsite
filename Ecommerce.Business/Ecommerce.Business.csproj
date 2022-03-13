@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.14">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ecommerce.Contracts\Ecommerce.Contracts.csproj" />
     <ProjectReference Include="..\Ecommerce.DataAccessor\Ecommerce.DataAccessor.csproj" />
+    <ProjectReference Include="..\Ecommerce.Identity\Ecommerce.Identity.csproj" />
   </ItemGroup>
 
 </Project>
