@@ -1,11 +1,29 @@
-﻿<header class="main-header_area position-relative">
+﻿@using Ecommerce.Contracts.Dtos
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    List<ProductItemCartDto> Cart = Helpers.SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContextAccessor.HttpContext.Session, "cart");
+    int total = 0;
+    if(Cart != null)
+    {
+        total = Cart.Count;
+    }
+
+    var TotalMoney = Cart.Sum(i => i.Quantity * i.Product.Price);
+
+
+}
+
+
+<header class="main-header_area position-relative">
             
             <div class="header-middle py-5">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-12">
                             <div class="header-middle-wrap">
-                                <a href="index.html" class="header-logo">
+                                <a asp-page="/Home/Index" class="header-logo">
                                     <img src="~/assets/images/logo/dark.png" alt="Header Logo">
                                 </a>
                                 <div class="header-search-area d-none d-lg-block">
@@ -46,7 +64,7 @@
                                         <li class="minicart-wrap me-3 me-lg-0">
                                             <a href="#miniCart" class="minicart-btn toolbar-btn">
                                                 <i class="pe-7s-shopbag"></i>
-                                                <span class="quantity">3</span>
+                                                <span class="quantity">@total</span>
                                             </a>
                                         </li>
                                         <li class="mobile-menu_wrap d-block d-lg-none">
@@ -416,47 +434,36 @@
                             <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
                         </div>
                         <ul class="minicart-list">
-                            <li class="minicart-product">
+                            @if(Cart != null )
+                            {
+                              @foreach (var item in Cart)
+                              {
+                               <li class="minicart-product">
                                 <a class="product-item_remove" href="#">
                                     <i class="pe-7s-close"></i>
                                 </a>
                                 <a href="shop.html" class="product-item_img">
-                                    <img class="img-full" src="~/assets/images/product/small-size/1-1-112x124.jpg" alt="Product Image">
+                                    <img class="img-full" src="@item.Product.ProductImages.ElementAt(0).ImageUrl" alt="Product Image">
                                 </a>
                                 <div class="product-item_content">
-                                    <a class="product-item_title" href="shop.html">Black Pepper Grains</a>
-                                    <span class="product-item_quantity">1 x $80.00</span>
+                                    <a class="product-item_title" href="shop.html">@item.Product.Name</a>
+                                    <span class="product-item_quantity">@item.Quantity x $@item.Product.Price.ToString("0.##")</span>
                                 </div>
-                            </li>
-                            <li class="minicart-product">
-                                <a class="product-item_remove" href="#">
-                                    <i class="pe-7s-close"></i>
-                                </a>
-                                <a href="shop.html" class="product-item_img">
-                                    <img class="img-full" src="~/assets/images/product/small-size/1-2-112x124.jpg" alt="Product Image">
-                                </a>
-                                <div class="product-item_content">
-                                    <a class="product-item_title" href="shop.html">Peanut Big Bean</a>
-                                    <span class="product-item_quantity">1 x $80.00</span>
-                                </div>
-                            </li>
-                            <li class="minicart-product">
-                                <a class="product-item_remove" href="#">
-                                    <i class="pe-7s-close"></i>
-                                </a>
-                                <a href="shop.html" class="product-item_img">
-                                    <img class="img-full" src="~/assets/images/product/small-size/1-3-112x124.jpg" alt="Product Image">
-                                </a>
-                                <div class="product-item_content">
-                                    <a class="product-item_title" href="shop.html">Dried Lemon Green</a>
-                                    <span class="product-item_quantity">1 x $80.00</span>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                        }
+                    }
+                    else
+                    {
+                       <li>
+                           <div>Không có sản phẩm nào</div>
+                       </li>
+                    }
+                </ul>
                     </div>
                     <div class="minicart-item_total">
                         <span>Subtotal</span>
-                        <span class="ammount">$240.00</span>
+                        
+                        <span class="ammount">$@TotalMoney</span>
                     </div>
                     <div class="group-btn_wrap d-grid gap-2">
                         <a href="cart.html" class="btn btn-secondary btn-primary-hover">View Cart</a>
