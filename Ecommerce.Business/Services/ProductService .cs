@@ -71,7 +71,9 @@ namespace Ecommerce.Business.Services
         {
             var query = _baseRepository.Entities;
 
-            query = query.Where(x => string.IsNullOrEmpty(name) || x.Name.Contains(name));
+            query = query.Include(x => x.Category).Where(x => string.IsNullOrEmpty(name) || x.Name.Contains(name) || x.Category.Name.Contains(name) );
+                
+                /*.Where(x => x.Category.Name.Contains(name));*/
             query = query.Include(x => x.Category).Include(c => c.ProductImages);
 
             query = query.OrderBy(x => x.Name);
@@ -97,6 +99,13 @@ namespace Ecommerce.Business.Services
         {
             var query = _baseRepository.Entities;
             List<Product> products = await query.Where(p=> p.CategoryId == categoryId).Include(p => p.Category).Include(p => p.ProductImages).OrderByDescending(p => p.Price).Take(num).ToListAsync();
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
+        public async Task<List<ProductDto>> GetLatestProduct(int num)
+        {
+            var query = _baseRepository.Entities;
+            List<Product> products = await query.Include(p => p.Category).Include(p => p.ProductImages).OrderByDescending(p => p.CreatedDate).Take(num).ToListAsync();
             return _mapper.Map<List<ProductDto>>(products);
         }
 

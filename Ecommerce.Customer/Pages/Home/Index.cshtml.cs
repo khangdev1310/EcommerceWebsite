@@ -24,13 +24,12 @@ namespace Ecommerce.Customer.Pages.NewFolder
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 5;
 
-
-
-        public async Task<ActionResult> OnGet()
-        {
-            Products = await _productService.PagedQueryAsync(null,CurrentPage,PageSize);
+        
+        public async Task OnGet()
+        {   
+            Products = await _productService.PagedQueryAsync(null, CurrentPage,PageSize);
             Categories = (List<CategoryDto>) await _categoryService.GetAllAsync();
-            return Page();
+            
         }
     }
 }

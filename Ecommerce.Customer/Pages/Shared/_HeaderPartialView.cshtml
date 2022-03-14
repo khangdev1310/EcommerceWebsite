@@ -29,17 +29,9 @@
                                     <img src="~/assets/images/logo/dark.png" alt="Header Logo">
                                 </a>
                                 <div class="header-search-area d-none d-lg-block">
-                                    <form action="#" class="header-searchbox">
-                                        <select class="nice-select select-search-category wide">
-                                            <option value="all">All Category</option>
-                                            <option value="product-item">Product Item</option>
-                                            <option value="product-item-2">Product Item 02</option>
-                                            <option value="product-item-3">Product Item 03</option>
-                                            <option value="product-item-4">Product Item 04</option>
-                                            <option value="product-item-5">Product Item 05</option>
-                                        </select>
-                                        <input class="input-field" type="text" placeholder="Search Products">
-                                        <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
+                                    <form class="header-searchbox" asp-page="/Product/Index" method="get">
+                                        <input class="input-field" type="text" placeholder="Tìm kiếm sản phẩm" name="searchString">
+                                        <button class="btn btn-outline-whisper btn-primary-hover" type="submit" ><i class="pe-7s-search"></i></button>
                                     </form>
                                 </div>
                                 <div class="header-right">
@@ -49,9 +41,17 @@
                                                 <i class="pe-7s-users"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingButton">
-                                                <li><a class="dropdown-item" asp-page="/Auth/Login">Login</a></li>
-                                                <li><a class="dropdown-item" asp-page="/Auth/Register">Register</a></li>
-                                            </ul>
+                                        @if (@User.Identity.IsAuthenticated)
+                                        {
+                                            <li><span style="padding: 4px 16px">Xin chào, @User.Claims.FirstOrDefault(c => c.Type == "name").Value</span></li>
+                                            <li><a class="dropdown-item" asp-page="/Auth/Logout">Đăng xuất</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a class="dropdown-item" asp-page="/Auth/Login">Login</a></li>
+                                            <li><a class="dropdown-item" asp-page="/Auth/Register">Register</a></li>
+                                        }
+                                    </ul>
                                         </li>
                                         <li class="d-none d-md-block">
                                             <a href="wishlist.html">

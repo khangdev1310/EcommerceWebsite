@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
 
 namespace Ecommerce.Customer.Pages.Auth
 {
-    [Authorize]
-    public class LoginModel : PageModel
+    public class LogoutModel : PageModel
     {
         public IActionResult OnGet()
         {
-            return Redirect("/Home");
+            return SignOut("Cookies","oidc");
         }
     }
 }
