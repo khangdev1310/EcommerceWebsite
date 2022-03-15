@@ -34,8 +34,8 @@ namespace Rookie.Ecom.Business
 
             CreateMap<RatingDto, Rating>();
 
-            CreateMap<OrderDto, Order>()
-                .ForMember(d => d.Details, t => t.Ignore());
+            CreateMap<OrderDto, Order>();
+                
 
             CreateMap<OrderDetailDto, OrderDetail>();
 

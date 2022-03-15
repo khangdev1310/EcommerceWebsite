@@ -85,7 +85,8 @@
                                         </div>
                                         <p class="short-desc mb-6">@productDetail.Desc</p>
                                         <ul class="quantity-with-btn pb-7">
-                                           <form method="post" asp-page="/Product/Details" asp-page-handler="cartlist" asp-route-id="@productDetail.Id">
+                                           <form method="post" asp-page="/Product/Details" asp-page-handler="cartlist" asp-route-id="@productDetail.Id"
+                                           style="display: flex">
                                             <li class="quantity">
                                                 <div class="cart-plus-minus">
                                                     <input name="ProductQty" class="cart-plus-minus-box" value="@Model.ProductQty" type="text">
@@ -93,13 +94,13 @@
                                             </li>
                                             <li class="add-to-cart">
                                                     <button class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" type="submit">Thêm vào giỏ hàng</button>
-                                            </form>
                                             </li>
                                             <li class="wishlist-btn-wrap">
                                                 <a class="btn rounded-0" href="wishlist.html">
                                                     <i class="pe-7s-like"></i>
                                                 </a>
                                             </li>
+                                            </form>
                                         </ul>
                                         <div class="product-category text-matterhorn pb-2">
                                             <span class="title">Danh mục:</span>

@@ -8,7 +8,7 @@
     decimal TotalMoney = 0;
     if(Cart != null)
     {
-        total = Cart.Count;
+        total = Cart.Sum(i => i.Quantity);
         TotalMoney = Cart.Sum(i => i.Quantity * i.Product.Price);
     }
 
@@ -44,6 +44,7 @@
                                         @if (@User.Identity.IsAuthenticated)
                                         {
                                             <li><span style="padding: 4px 16px">Xin chào, @User.Claims.FirstOrDefault(c => c.Type == "name").Value</span></li>
+                                            <li><a class="dropdown-item" asp-page="/Order/Index">Lịch sử mua hàng</a></li>
                                             <li><a class="dropdown-item" asp-page="/Auth/Logout">Đăng xuất</a></li>
                                         }
                                         else
@@ -468,8 +469,8 @@
                         <span class="ammount">$@TotalMoney</span>
                     </div>
                     <div class="group-btn_wrap d-grid gap-2">
-                        <a href="cart.html" class="btn btn-secondary btn-primary-hover">View Cart</a>
-                        <a href="checkout.html" class="btn btn-secondary btn-primary-hover">Checkout</a>
+                        <a asp-page="/Product/Cart" class="btn btn-secondary btn-primary-hover">Xem giỏ hàng</a>
+                        <a asp-page="/Product/Checkout" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
                     </div>
                 </div>
             </div>

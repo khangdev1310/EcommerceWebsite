@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecommerce.DataAccessor.Entities
@@ -13,6 +14,26 @@ namespace Ecommerce.DataAccessor.Entities
         [Column("Note")]
         public string NoteOrder { get; set; }
 
-        public ICollection<OrderDetail> Details { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string Street { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string Province { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string Country { get; set; }
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

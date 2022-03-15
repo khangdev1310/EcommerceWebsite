@@ -27,7 +27,7 @@ namespace Ecommerce.Customer.Pages.Product
         public List<CategoryDto> Categories { get; set; }
         public ProductDto productDto { get; set; }
         public int CurrentPage { get; set; } = 1;
-        public int PageSize { get; set; } = 2;
+        public int PageSize { get; set; } = 5;
         public string CurrentSeacrh { get; set; }
         public List<ProductDto> newLatestProducts { get; set; }
         public async Task<ActionResult> OnGetAsync(string searchString,int? pageIndex)

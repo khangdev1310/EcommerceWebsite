@@ -1,6 +1,7 @@
 ﻿@page
 @model Ecommerce.Customer.Pages.Product.CartModel
 @{
+    var carts = @Model.Cart;
 }
 
 
@@ -10,12 +11,12 @@
                     <div class="row h-100">
                         <div class="col-lg-12">
                             <div class="breadcrumb-item">
-                                <h2 class="breadcrumb-heading">Product Related</h2>
+                                <h2 class="breadcrumb-heading">Giỏ hàng</h2>
                                 <ul>
                                     <li>
-                                        <a href="index.html">Home <i class="pe-7s-angle-right"></i></a>
+                                        <a asp-page="/Home/Index">Trang chủ <i class="pe-7s-angle-right"></i></a>
                                     </li>
-                                    <li>Cart</li>
+                                    <li>Giỏ hàng</li>
                                 </ul>
                             </div>
                         </div>
@@ -26,7 +27,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <form action="javascript:void(0)">
+                            <form method="post" asp-page-handler="UpdateCart" asp-page="/Product/Cart">
                                 <div class="table-content table-responsive">
                                     <table class="table">
                                         <thead>
@@ -40,76 +41,42 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            @if(@Model.Cart != null) 
+                                            {
+                                                @for (var i = 0; i < carts.Count; i++)
+                                                {
+                                               <tr>
                                                 <td class="product_remove">
-                                                    <a href="javascript:void(0)">
+                                                    <a asp-page-handler="DeleteCart" asp-route-productid="@carts.ElementAt(i).Product.Id" asp-page="/Product/Cart">
                                                         <i class="pe-7s-close" title="Remove"></i>
                                                     </a>
                                                 </td>
                                                 <td class="product-thumbnail">
                                                     <a href="javascript:void(0)">
-                                                        <img src="assets/images/product/small-size/1-1-112x124.jpg" alt="Cart Thumbnail">
+                                                        <img src="@carts.ElementAt(i).Product.ProductImages.ElementAt(0).ImageUrl" alt="Cart Thumbnail">
                                                     </a>
                                                 </td>
-                                                <td class="product-name"><a href="javascript:void(0)">Black Pepper Grains</a></td>
-                                                <td class="product-price"><span class="amount">$80.00</span></td>
+                                                <td class="product-name"><a href="javascript:void(0)">@carts.ElementAt(i).Product.Name</a></td>
+                                                <td class="product-price"><span class="amount">$@carts.ElementAt(i).Product.Price.ToString("0.##")</span></td>
                                                 <td class="quantity">
                                                     <div class="cart-plus-minus">
-                                                        <input class="cart-plus-minus-box" value="1" type="text">
+                                                        <input class="cart-plus-minus-box" name="quantities" value="@carts.ElementAt(i).Quantity" type="text">
                                                     </div>
                                                 </td>
-                                                <td class="product-subtotal"><span class="amount">$80.00</span></td>
+                                                <td class="product-subtotal"><span class="amount">$@(carts.ElementAt(i).Product.Price * @carts.ElementAt(i).Quantity)</span></td>
                                             </tr>
-                                            <tr>
-                                                <td class="product_remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="pe-7s-close" title="Remove"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="product-thumbnail">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/images/product/small-size/1-2-112x124.jpg" alt="Cart Thumbnail">
-                                                    </a>
-                                                </td>
-                                                <td class="product-name"><a href="javascript:void(0)">Peanut Big Bean</a></td>
-                                                <td class="product-price"><span class="amount">$80.00</span></td>
-                                                <td class="quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <input class="cart-plus-minus-box" value="1" type="text">
-                                                    </div>
-                                                </td>
-                                                <td class="product-subtotal"><span class="amount">$80.00</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="product_remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="pe-7s-close" title="Remove"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="product-thumbnail">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/images/product/small-size/1-3-112x124.jpg" alt="Cart Thumbnail">
-                                                    </a>
-                                                </td>
-                                                <td class="product-name"><a href="javascript:void(0)">Dried Lemon Green</a></td>
-                                                <td class="product-price"><span class="amount">$80.00</span></td>
-                                                <td class="quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <input class="cart-plus-minus-box" value="1" type="text">
-                                                    </div>
-                                                </td>
-                                                <td class="product-subtotal"><span class="amount">$80.00</span></td>
-                                            </tr>
+                                                    }
+                                           }
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="coupon-all">
-                                            <div class="coupon">
+                                            @*<div class="coupon">
                                                 <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
                                                 <input class="button mt-xxs-30" name="apply_coupon" value="Apply coupon" type="submit">
-                                            </div>
+                                            </div>*@
                                             <div class="coupon2">
                                                 <input class="button" name="update_cart" value="Update cart" type="submit">
                                             </div>
@@ -121,8 +88,8 @@
                                         <div class="cart-page-total">
                                             <h2>Cart totals</h2>
                                             <ul>
-                                                <li>Subtotal <span>$118.60</span></li>
-                                                <li>Total <span>$118.60</span></li>
+                                                <li>Subtotal <span>$@carts.Sum(i => i.Quantity * i.Product.Price)</span></li>
+                                                <li>Total <span>$@carts.Sum(i => i.Quantity * i.Product.Price)</span></li>
                                             </ul>
                                             <a href="javascript:void(0)">Proceed to checkout</a>
                                         </div>

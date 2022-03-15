@@ -67,6 +67,11 @@ namespace Ecommerce.DataAccessor.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
@@ -75,16 +80,36 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("NoteOrder")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Note");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("TotalPrice");
 
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2")
@@ -250,7 +275,14 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<bool>("IsRated")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrderDetailId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Order_detail_id");
+
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Star")
@@ -266,6 +298,9 @@ namespace Ecommerce.DataAccessor.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderDetailId")
+                        .IsUnique();
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("Ratings");
@@ -274,7 +309,7 @@ namespace Ecommerce.DataAccessor.Migrations
             modelBuilder.Entity("Ecommerce.DataAccessor.Entities.OrderDetail", b =>
                 {
                     b.HasOne("Ecommerce.DataAccessor.Entities.Order", "Order")
-                        .WithMany("Details")
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("Ecommerce.DataAccessor.Entities.Product", "Product")
@@ -308,9 +343,19 @@ namespace Ecommerce.DataAccessor.Migrations
 
             modelBuilder.Entity("Ecommerce.DataAccessor.Entities.Rating", b =>
                 {
+                    b.HasOne("Ecommerce.DataAccessor.Entities.OrderDetail", "OrderDetail")
+                        .WithOne("Rating")
+                        .HasForeignKey("Ecommerce.DataAccessor.Entities.Rating", "OrderDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Ecommerce.DataAccessor.Entities.Product", "Product")
                         .WithMany("Ratings")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderDetail");
 
                     b.Navigation("Product");
                 });
@@ -322,7 +367,12 @@ namespace Ecommerce.DataAccessor.Migrations
 
             modelBuilder.Entity("Ecommerce.DataAccessor.Entities.Order", b =>
                 {
-                    b.Navigation("Details");
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("Ecommerce.DataAccessor.Entities.OrderDetail", b =>
+                {
+                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("Ecommerce.DataAccessor.Entities.Product", b =>

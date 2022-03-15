@@ -13,7 +13,7 @@ namespace Ecommerce.DataAccessor
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DbConnection"), b =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
                     b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
                 ));
         }
