@@ -4,14 +4,16 @@ using Ecommerce.DataAccessor.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ecommerce.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220316044256_FixColumnOrder")]
+    partial class FixColumnOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,8 +31,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
                     b.Property<string>("Desc")
@@ -52,8 +54,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
 
-                    b.Property<string>("UpdaterId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Updated_by");
 
                     b.HasKey("Id");
@@ -76,8 +78,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
                     b.Property<string>("FirstName")
@@ -120,8 +122,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
 
-                    b.Property<string>("UpdaterId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Updated_by");
 
                     b.HasKey("Id");
@@ -139,8 +141,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
                     b.Property<Guid?>("OrderId")
@@ -159,8 +161,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
 
-                    b.Property<string>("UpdaterId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Updated_by");
 
                     b.HasKey("Id");
@@ -185,8 +187,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
                     b.Property<string>("Desc")
@@ -215,8 +217,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
 
-                    b.Property<string>("UpdaterId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Updated_by");
 
                     b.HasKey("Id");
@@ -236,8 +238,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
                     b.Property<string>("ImageUrl")
@@ -251,8 +253,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
 
-                    b.Property<string>("UpdaterId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Updated_by");
 
                     b.HasKey("Id");
@@ -276,8 +278,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Created_at");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Created_by");
 
                     b.Property<bool>("IsRated")
@@ -297,8 +299,8 @@ namespace Ecommerce.DataAccessor.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Updated_at");
 
-                    b.Property<string>("UpdaterId")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Updated_by");
 
                     b.HasKey("Id");

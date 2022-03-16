@@ -1,4 +1,6 @@
 ﻿using Ecommerce.Contracts.Dtos;
+using Ecommerce.Contracts.Dtos.Order;
+using Ecommerce.Contracts.Dtos.Rating;
 using Ecommerce.DataAccessor.Entities;
 
 
@@ -19,9 +21,11 @@ namespace Rookie.Ecom.Business
             //ForMember: Map các property của destinate -> src.
                 .ForMember(d => d.Products, t => t.Ignore());
 
+            //Category
             CreateMap<CreateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
             CreateMap<UpdateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
 
+            //Product
             CreateMap<ProductDto, Product>(memberList: AutoMapper.MemberList.None);
             CreateMap<CreateProductDto, Product>(memberList: AutoMapper.MemberList.None);
             CreateMap<UpdateProductDto, Product>(memberList: AutoMapper.MemberList.None);
@@ -32,12 +36,22 @@ namespace Rookie.Ecom.Business
 
             CreateMap<CreateProductImageDto, ProductImage>(memberList: AutoMapper.MemberList.None);
 
-            CreateMap<RatingDto, Rating>();
 
-            CreateMap<OrderDto, Order>();
+            //Order
+            CreateMap<CreateOrderDto, Order>(memberList: AutoMapper.MemberList.None);
+            CreateMap<OrderDto, Order>(memberList: AutoMapper.MemberList.None);
+
+            //OrderDetail
+            CreateMap<CreateOrderDetailDto, OrderDetail>(memberList: AutoMapper.MemberList.None);
+            CreateMap<OrderDetailDto, OrderDetail>(memberList: AutoMapper.MemberList.None);
+
+
+            //Rating
+            CreateMap<CreateRatingDto, Rating>(memberList: AutoMapper.MemberList.None);
+            CreateMap<RatingDto, Rating>(memberList: AutoMapper.MemberList.None);
+
                 
 
-            CreateMap<OrderDetailDto, OrderDetail>();
 
 
 

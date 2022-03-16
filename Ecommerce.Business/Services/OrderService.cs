@@ -2,6 +2,7 @@
 using Ecommerce.Business.Interfaces;
 using Ecommerce.Contracts;
 using Ecommerce.Contracts.Dtos;
+using Ecommerce.Contracts.Dtos.Order;
 using Ecommerce.DataAccessor.Entities;
 using Ecommerce.DataAccessor.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,50 +24,49 @@ namespace Ecommerce.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<OrderDto> AddAsync(OrderDto OrderDto)
+        public async Task<OrderDto> CreateOrder(CreateOrderDto createOrderDto)
         {
-            var Order = _mapper.Map<Order>(OrderDto);
-            var item = await _baseRepository.AddAsync(Order);
-            return _mapper.Map<OrderDto>(item);
+            if(createOrderDto == null)
+            {
+                throw new ArgumentNullException(nameof(CreateOrderDto));
+            }
+            Order order = _mapper.Map<Order>(createOrderDto);
+            order = await _baseRepository.AddAsync(order);
+
+            return  _mapper.Map<OrderDto>(order);
+
+        }
+        public async Task<List<OrderDto>> GetListOrderByUserIdAsync(string userId)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Where(o => o.CreatorId == userId);
+            if (query.Count() > 0)
+            {
+                query = query.Include(o => o.OrderDetails)
+                    .ThenInclude(p => p.Rating)
+                    .Include(o => o.OrderDetails).ThenInclude(p => p.Product).ThenInclude(m => m.ProductImages);
+                return _mapper.Map<List<OrderDto>>(await query.ToListAsync());
+
+            }
+
+            return null;
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task<OrderDto> GetOrderByIdAsync(Guid id)
         {
-            await _baseRepository.DeleteAsync(id);
-        }
+            var query = _baseRepository.Entities;
 
-        public async Task UpdateAsync(OrderDto OrderDto)
-        {
-            var Order = _mapper.Map<Order>(OrderDto);
-            await _baseRepository.UpdateAsync(Order);
-        }
+            query = query.Where(o => o.Id == id)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(x => x.Rating)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(p => p.Product)
+                .ThenInclude(p => p.ProductImages);
 
-        public async Task<IEnumerable<OrderDto>> GetAllAsync()
-        {
-            var categories = await _baseRepository.GetAllAsync();
-            return _mapper.Map<List<OrderDto>>(categories);
+            if (query == null)
+                return null;
+            return _mapper.Map<OrderDto>(await query.FirstOrDefaultAsync());
         }
-
-        public async Task<OrderDto> GetByIdAsync(Guid id)
-        {
-            // map roles and users: collection (roleid, userid)
-            // upsert: delete, update, insert
-            // input vs db
-            // input-y vs db-no => insert
-            // input-n vs db-yes => delete
-            // input-y vs db-y => update
-            // unique, distinct, no-duplicate
-            var Order = await _baseRepository.GetByIdAsync(id);
-            return _mapper.Map<OrderDto>(Order);
-        }
-
-        public async Task<OrderDto> GetByStatusAsync(string name)
-        {
-            var Order = await _baseRepository.GetByAsync(x => x.Status == name);
-            return _mapper.Map<OrderDto>(Order);
-        }
-
-        
 
     }
 }

@@ -16,6 +16,9 @@ namespace Ecommerce.DataAccessor.Entities
 
         [Required]
         [MaxLength(100)]
+        public string FirstName { get; set; }
+        [Required]
+        [MaxLength(100)]
         public string LastName { get; set; }
 
         [Required]
