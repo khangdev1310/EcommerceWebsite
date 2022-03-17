@@ -14,7 +14,7 @@ namespace Ecommerce.Contracts.Dtos
 
         public DateTime UpdatedDate { get; set; }
 
-        public string? CreatorId { get; set; }
-        public string? UpdaterId { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
     }
 }

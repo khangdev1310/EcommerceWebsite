@@ -98,6 +98,7 @@ namespace Ecommerce.Identity
             services.AddIdentity<EcommerceUser, IdentityRole>()
                    .AddEntityFrameworkStores<AspNetIdentityDbContext>()
                    .AddDefaultTokenProviders();
+            services.AddIdentityLayer(Configuration);
 
             var builder = services.AddIdentityServer(options =>
             {

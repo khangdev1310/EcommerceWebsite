@@ -21,8 +21,10 @@ namespace Ecommerce.Business
            services.AddTransient<ICategoryService, CategoryService>();
            services.AddTransient<IProductService, ProductService>();
            services.AddTransient<IProductImageService, ProductImageService>();
-
+           services.AddTransient<IOrganicIdentityUserService, OrganicIdentityUserService>();
            services.AddTransient<IOrderService, OrderService>();
+           services.AddTransient<IOrderDetailService, OrderDetailService>();
+           services.AddTransient<IRatingService, RatingService>();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Ecommerce.Business.Services
         public async Task<List<OrderDto>> GetListOrderByUserIdAsync(string userId)
         {
             var query = _baseRepository.Entities;
-            query = query.Where(o => o.CreatorId == userId);
+            query = query.Where(o => o.CreatedBy == userId);
             if (query.Count() > 0)
             {
                 query = query.Include(o => o.OrderDetails)

@@ -25,56 +25,66 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-12">
-                            <form method="post">
+                            
+                            <form method="post" asp-page="/Product/Checkout">
                                 <div class="checkbox-form">
                                     <h3>Billing Details</h3>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
-                                                <label>First Name <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
+                                                <label asp-for="@Model.CreateOrder.FirstName">First Name <span class="required">*</span></label>
+                                                 <input asp-for="@Model.CreateOrder.FirstName" placeholder="Nhập họ"  type="text">
+                                                  <span class="text-danger" asp-validation-for="@Model.CreateOrder.FirstName"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
-                                                <label>Last Name <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
+                                                <label asp-for="@Model.CreateOrder.LastName">Last Name <span class="required">*</span></label>
+                                                <input asp-for="@Model.CreateOrder.LastName" placeholder="Nhập tên"  type="text">
+                                                 <span class="text-danger" asp-validation-for="@Model.CreateOrder.LastName"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
-                                                <label>Country <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
+                                                <label asp-for="@Model.CreateOrder.Country">Country <span class="required">*</span></label>
+                                                <input asp-for="@Model.CreateOrder.Country" placeholder="Nhập quê quán"  type="text">
+                                                <span class="text-danger" asp-validation-for="@Model.CreateOrder.Country"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
-                                                <label>Address <span class="required">*</span></label>
-                                                <input placeholder="Street address" type="text">
+                                                <label asp-for="@Model.CreateOrder.Street">Address <span class="required">*</span></label>
+                                                <input asp-for="@Model.CreateOrder.Street" placeholder="Nhập địa chỉ"  type="text">
+                                                 <span class="text-danger" asp-validation-for="@Model.CreateOrder.Street"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
-                                                <label>Province <span class="required">*</span></label>
-                                                <input placeholder="Province" type="text">
+                                                <label asp-for="@Model.CreateOrder.Province">Province <span class="required">*</span></label>
+                                                <input asp-for="@Model.CreateOrder.Province" placeholder="Nhập thành phố"  type="text">
+                                                 <span class="text-danger" asp-validation-for="@Model.CreateOrder.Province"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
-                                                <label>Phone number <span class="required">*</span></label>
-                                                <input placeholder="Phone number" type="text">
+                                                <label asp-for="@Model.CreateOrder.PhoneNumber">Phone number <span class="required">*</span></label>
+                                                <input asp-for="@Model.CreateOrder.PhoneNumber" placeholder="Nhập số điện thoại"  type="text">
+                                                 <span class="text-danger" asp-validation-for="@Model.CreateOrder.PhoneNumber"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="different-address">
                                         <div class="order-notes">
                                             <div class="checkout-form-list checkout-form-list-2">
-                                                <label>Order Notes</label>
+                                                <label asp-for="@Model.CreateOrder.NoteOrder">Order Notes</label>
                                                 <textarea id="checkout-mess" cols="30" rows="10"
-                                                placeholder="Notes Order"></textarea>
+                                                placeholder="Notes Order" asp-for="@Model.CreateOrder.NoteOrder"></textarea>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="order-button-payment">
+                                            <input value="Thanh toán" type="submit">
                                 </div>
                             </form>
                         </div>
@@ -90,17 +100,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="cart_item" style="text-align: center">
-                                                <td class="cart-product-name"> Vestibulum suscipit<strong class="product-quantity">
-                                                    × 1</strong></td>
-                                                <td class="cart-product-total"><span class="amount">$165.00</span></td>
+                                            
+                                    @if(@Model.Cart != null)
+                                    {
+                                        @foreach (var item in @Model.Cart)
+                                       {
+                                           <tr class="cart_item" style="text-align: center">
+                                                <td class="cart-product-name">@item.Product.Name<strong class="product-quantity">
+                                                    x @item.Quantity</strong></td>
+                                                <td class="cart-product-total"><span class="amount">$@(item.Quantity * @item.Product.Price)</span></td>
                                             </tr>
-                                        </tbody>
+                                       }
+                                    }
+                                </tbody>
                                         <tfoot>
-                                            <tr class="order-total" style="text-align: center">
+                                            @if(@Model.Cart != null){
+                                                <tr class="order-total" style="text-align: center">
                                                 <th>Order Total</th>
-                                                <td><strong><span class="amount">$215.00</span></strong></td>
+                                                <td><strong><span class="amount">$@Model.Cart.Sum(i => i.Product.Price * i.Quantity)</span></strong></td>
                                             </tr>
+                                            }
                                         </tfoot>
                                     </table>
                                 </div>
@@ -159,9 +178,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="order-button-payment">
-                                            <input value="Thanh toán" type="submit">
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>

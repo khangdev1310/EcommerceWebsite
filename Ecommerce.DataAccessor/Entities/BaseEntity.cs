@@ -16,8 +16,8 @@ namespace Ecommerce.DataAccessor.Entities
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         [Column("Created_by")]
-        public string? CreatorId { get; set; }
+        public string? CreatedBy { get; set; }
         [Column("Updated_by")]
-        public string? UpdaterId { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 }

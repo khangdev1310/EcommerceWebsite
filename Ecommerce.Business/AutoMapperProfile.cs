@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Contracts.Dtos;
+using Ecommerce.Contracts.Dtos.Auth;
 using Ecommerce.Contracts.Dtos.Order;
 using Ecommerce.Contracts.Dtos.Rating;
 using Ecommerce.DataAccessor.Entities;
@@ -48,12 +49,12 @@ namespace Rookie.Ecom.Business
 
             //Rating
             CreateMap<CreateRatingDto, Rating>(memberList: AutoMapper.MemberList.None);
+            CreateMap<UpdateRatingDto, Rating>(memberList: AutoMapper.MemberList.None);
             CreateMap<RatingDto, Rating>(memberList: AutoMapper.MemberList.None);
+            CreateMap<RatingDto, UpdateRatingDto>(memberList: AutoMapper.MemberList.None);
 
-                
-
-
-
+            //Auth
+            CreateMap<OrganicIdentityUserDto, EcommerceUser>(memberList: AutoMapper.MemberList.None);
 
         }
 
@@ -69,6 +70,9 @@ namespace Rookie.Ecom.Business
 
             CreateMap<OrderDetail, OrderDetailDto>();
 
+            CreateMap<Rating, RatingDto>();
+
+            CreateMap<EcommerceUser, OrganicIdentityUserDto>();
         }
     }
 }

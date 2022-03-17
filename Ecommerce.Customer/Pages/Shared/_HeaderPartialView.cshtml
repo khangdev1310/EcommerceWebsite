@@ -468,10 +468,12 @@
                         
                         <span class="ammount">$@TotalMoney</span>
                     </div>
-                    <div class="group-btn_wrap d-grid gap-2">
+                    @if(Cart != null){
+                        <div class="group-btn_wrap d-grid gap-2">
                         <a asp-page="/Product/Cart" class="btn btn-secondary btn-primary-hover">Xem giỏ hàng</a>
                         <a asp-page="/Product/Checkout" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
                     </div>
+                    }
                 </div>
             </div>
             <div class="global-overlay"></div>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ecommerce.Business.Interfaces;
 using Ecommerce.Contracts.Dtos;
 using Ecommerce.Contracts.Dtos.Order;
 using Ecommerce.Contracts.Dtos.Rating;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Business.Services
 {
-    public class OrderDetailService
+    public class OrderDetailService : IOrderDetailService
     {
         private readonly IBaseRepository<OrderDetail> _baseRepository;
         private readonly IMapper _mapper;
@@ -40,6 +41,13 @@ namespace Ecommerce.Business.Services
             return _mapper.Map<List<OrderDetailDto>>(orderItems.ToList());
         }
 
+        public Task<OrderDetailDto> GetOrderDetailByIdAsync(Guid id)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Where(x => x.Id == id).Include(x => x.Product);
+            throw new NotImplementedException();
+        }
+
         public async Task<List<RatingDto>> GetListRatingByProductIdAsync(Guid productId)
         {
             var query = _baseRepository.Entities;
@@ -48,6 +56,7 @@ namespace Ecommerce.Business.Services
                 .Include(o => o.Rating);
             return _mapper.Map<List<RatingDto>>(await query.Select(x => x.Rating).ToListAsync());
         }
+
 
 
     }
