@@ -15,6 +15,9 @@ namespace Ecommerce.Business.Interfaces
         Task<RatingDto> GetRatingAsync(Guid id);
         Task<List<RatingDto>> GetListRatingByProductIdAsync(Guid productId);
 
+        Task RatingAsync(UpdateRatingDto updateProductRatingDto);
+        Task<int> GetTotalRatingByUserId(string userId);
+
 
     }
 }

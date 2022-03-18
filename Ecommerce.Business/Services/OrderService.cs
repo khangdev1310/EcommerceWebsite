@@ -59,13 +59,23 @@ namespace Ecommerce.Business.Services
             query = query.Where(o => o.Id == id)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(x => x.Rating)
+                .Include(p => p.OrderDetails)
+                .ThenInclude(p => p.Product)
+                .ThenInclude(p => p.ProductImages)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(p => p.Product)
-                .ThenInclude(p => p.ProductImages);
+                .ThenInclude(p => p.Category);
+                
+                
 
             if (query == null)
                 return null;
             return _mapper.Map<OrderDto>(await query.FirstOrDefaultAsync());
+        }
+
+        public async Task<int> GetTotalOrderByUserId(string userId)
+        {
+            return await _baseRepository.Entities.Where(o => o.CreatedBy == userId).CountAsync();
         }
 
     }

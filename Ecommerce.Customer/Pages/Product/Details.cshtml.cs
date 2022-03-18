@@ -1,5 +1,6 @@
 using Ecommerce.Business.Interfaces;
 using Ecommerce.Contracts.Dtos;
+using Ecommerce.Contracts.Dtos.Rating;
 using Ecommerce.Customer.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,17 +14,20 @@ namespace Ecommerce.Customer.Pages.Product
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
+        private readonly IRatingService _ratingService;
         public ProductDto ProductDetail { get; set; }
         public List<ProductDto> RelatedProducts { get; set; }
         public List<CategoryDto> Categories { get; set; }
         public List<ProductItemCartDto> Cart { get; set; }
+        public List<RatingDto> ListReviews { get; set; }
         public int ProductQty { get; set; } = 1;
 
 
-        public DetailsModel(IProductService productService, ICategoryService categoryService)
+        public DetailsModel(IProductService productService, ICategoryService categoryService, IRatingService ratingService)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _ratingService = ratingService;
         }
 
         public async Task<ActionResult> OnGetAsync(Guid id)
@@ -31,7 +35,9 @@ namespace Ecommerce.Customer.Pages.Product
             ProductDetail = await _productService.GetByIdAsync(id);
             RelatedProducts = await _productService.GetRelatedProduct(ProductDetail.CategoryId, 4);
             Categories = (List<CategoryDto>)await _categoryService.GetAllAsync();
-            
+            ListReviews = await _ratingService.GetListRatingByProductIdAsync(id);
+
+
             if (ProductDetail == null)
             {
                 return NotFound();

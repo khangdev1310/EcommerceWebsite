@@ -12,6 +12,7 @@ namespace Ecommerce.Business.Interfaces
         Task<OrderDto> CreateOrder(CreateOrderDto createOrderDto);
         Task<List<OrderDto>> GetListOrderByUserIdAsync(string userId);
         Task<OrderDto> GetOrderByIdAsync(Guid id);
+        Task<int> GetTotalOrderByUserId(string userId);
 
     }
 }

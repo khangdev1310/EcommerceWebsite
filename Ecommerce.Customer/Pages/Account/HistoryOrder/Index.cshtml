@@ -1,0 +1,154 @@
+﻿@page
+@model Ecommerce.Customer.Pages.Account.HistoryOrder.IndexModel
+@{
+    
+}
+
+<div class="container-fluid my-5 d-flex justify-content-center " style="gap: 10%">
+    <div class="card card-1" style="width: 50%">
+        <div class="card-header bg-white">
+            <div class="media flex-sm-row flex-column-reverse justify-content-between ">
+                <div class="col my-auto">
+                    <h4 class="mb-0">Thanks for your order,<span class="change-color" style="color: red">@User.Claims.FirstOrDefault(o => o.Type == "name").Value</span> !</h4>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-between mb-3">
+                <div class="col-auto">
+                    <h6 class="color-1 mb-0 change-color">Receipt</h6>
+                </div>
+                <div class="col-auto "> <small>Order Id : @Model.Order.Id.ToString().Substring(0,8)</small> </div>
+            </div>
+            @if (@Model.Order != null)
+           {
+               @foreach (var item in @Model.Order.OrderDetails)
+              {
+                  <div class="row">
+                <div class="col">
+                    <div class="card card-2">
+                        <div class="card-body">
+                            <div class="media">
+                                <div> <small>Order Detail Id : @item.Id.ToString().Substring(0,8)</small> </div>
+                                <div class="sq align-self-center d-flex" style="justify-content: space-between; align-items: center"> 
+                                    <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="@item.Product.ProductImages.ElementAt(0).ImageUrl" width="135" height="135" /> 
+                                    
+                                    @if(@item.Rating.IsRated == false){
+                                        <a asp-page="/Account/HistoryOrder/Rating" asp-route-id="@item.Rating.Id" class="btn btn-secondary btn-primary-hover"><span>Rating</span></a>
+                                    }
+
+                                </div>
+                                <div class="media-body my-auto text-right">
+                                    <div class="row my-auto flex-column flex-md-row">
+                                        <div class="col-auto my-auto">
+                                            <h6 class="mb-0"> @item.Product.Name</h6>
+                                        </div>
+                                        <div class="col-auto my-auto"> <small>Category: @item.Product.Category.Name</small></div>
+                                        <div class="col-auto my-auto"> <small>Qty: @item.Quantity</small></div>
+                                         
+                                        <div class="col-auto my-auto">
+                                            <strong class="mb-0">$@(item.Quantity * item.Product.Price)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-3 ">
+                            <div class="row">
+                                <div class="col-md-3 mb-3"> <small> Track Order <span><i class=" ml-2 fa fa-refresh" aria-hidden="true"></i></span></small> </div>
+                                <div class="col mt-auto">
+                                    <div class="progress my-auto">
+                                        <div class="progress-bar progress-bar rounded" style="width: 100%" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="media row justify-content-between ">
+                                        <div class="col-auto flex-col-auto"><small class="text-right mr-sm-2">Delivered</small><span> <i class="fa fa-circle"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              }
+           }
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <p class="mb-1"><b>Total</b></p>
+                        </div>
+                        <div class="flex-sm-col col-auto">
+                            <p class="mb-1">$@Model.Order.OrderDetails.Sum(i => i.Quantity * i.Product.Price)</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="flex-sm-col text-right col">
+                            <p class="mb-1"> <b>Discount</b></p>
+                        </div>
+                        <div class="flex-sm-col col-auto">
+                            <p class="mb-1">$0</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="flex-sm-col text-right col">
+                            <p class="mb-1"><b>Delivery Charges</b></p>
+                        </div>
+                        <div class="flex-sm-col col-auto">
+                            <p class="mb-1">Free</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row invoice ">
+                <div class="col">
+                    @*<p class="mb-1"> Invoice Number : 788152</p>*@
+                    <p class="mb-1">Invoice Date : @Model.Order.CreatedDate.ToString("dd MMM, yyyy")</p>
+                </div>
+
+            </div>
+            <div class="row invoice ">
+                <div class="col">
+                    <h3>Delivery Address</h3>
+                    <p class="mb-1"> FullName : @Model.Order.FirstName</p>
+                    <p class="mb-1">Phone Number : @Model.Order.PhoneNumber</p>
+                    <p class="mb-1">Street : @Model.Order.Street</p>
+                    <p class="mb-1">Province : @Model.Order.Province</p>
+                    <p class="mb-1">Country : @Model.Order.Country</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="jumbotron-fluid">
+                <div class="row justify-content-between ">
+                    <div class="col-auto my-auto ">
+                        <h2 class="mb-0 font-weight-bold">TOTAL PAID</h2>
+                    </div>
+                    <div class="col-auto my-auto ml-auto">
+                        <h1 class="display-3 ">$@Model.Order.OrderDetails.Sum(i => i.Quantity * i.Product.Price).ToString("0.##")</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     @*<div class="feedback-area pt-5" style="width: 30%">
+             <h2 class="heading mb-1">Add a review</h2>
+             <div class="rating-box">
+             <span>Your rating</span>
+             
+             </div>
+             <form class="feedback-form pt-8" method="post">
+             <input type="range" value="5" step="0.5" id="backing5" name="Rating">
+             <div class="rateit" data-rateit-backingfld="#backing5" data-rateit-resetable="false" data-rateit-ispreset="true"
+                     data-rateit-min="0" data-rateit-max="5">
+             </div>
+             <div class="form-field mt-6">
+               <textarea name="message" placeholder="Message" class="textarea-field"></textarea>
+             </div>
+             
+             <div class="button-wrap mt-8">
+              <button type="submit" value="submit" class="btn btn-custom-size lg-size btn-secondary btn-primary-hover btn-lg rounded-0" name="submit">Submit</button>
+              </div>
+              </form>
+              </div>*@
+</div>

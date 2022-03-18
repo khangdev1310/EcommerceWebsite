@@ -53,5 +53,19 @@ namespace Ecommerce.Business.Services
 
             return _mapper.Map<List<RatingDto>>(await query.ToListAsync());
         }
+        public async Task RatingAsync(UpdateRatingDto updateProductRatingDto)
+        {
+            var productRating = await _baseRepository.GetByIdAsync(updateProductRatingDto.Id);
+            productRating.Star = updateProductRatingDto.Star;
+            productRating.Comment = updateProductRatingDto.Comment;
+            productRating.IsRated = updateProductRatingDto.IsRated;
+            productRating.UpdatedDate = updateProductRatingDto.UpdateDate;
+            await _baseRepository.UpdateAsync(productRating);
+        }
+
+        public async Task<int> GetTotalRatingByUserId(string userId)
+        {
+            return await _baseRepository.Entities.Where(pr => pr.CreatedBy == userId).Where(pr => pr.IsRated).CountAsync();
+        }
     }
 }

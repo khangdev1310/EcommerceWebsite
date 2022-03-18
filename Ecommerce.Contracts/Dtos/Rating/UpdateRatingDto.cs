@@ -19,7 +19,7 @@ namespace Ecommerce.Contracts.Dtos.Rating
         public float Star { get; set; } = 5;
         public bool IsRated { get; set; } = false;
 
-        public DateTime UpdateUpdatedDate { get; set; }
+        public DateTime UpdateDate { get; set; }
 
 
 

@@ -44,7 +44,7 @@
                                         @if (@User.Identity.IsAuthenticated)
                                         {
                                             <li><span style="padding: 4px 16px">Xin chào, @User.Claims.FirstOrDefault(c => c.Type == "name").Value</span></li>
-                                            <li><a class="dropdown-item" asp-page="/Order/Index">Lịch sử mua hàng</a></li>
+                                            <li><a class="dropdown-item" asp-page="/Account/Index">Thông tin tài khoản</a></li>
                                             <li><a class="dropdown-item" asp-page="/Auth/Logout">Đăng xuất</a></li>
                                         }
                                         else
