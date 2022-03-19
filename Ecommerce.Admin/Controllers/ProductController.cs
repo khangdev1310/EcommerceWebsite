@@ -3,15 +3,18 @@ using Ecommerce.Contracts;
 using Ecommerce.Contracts.Constants;
 using Ecommerce.Contracts.Dtos;
 using EnsureThat;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Ecommerce.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
@@ -47,7 +50,23 @@ namespace Ecommerce.Admin.Controllers
         public async Task<ActionResult> UpdateAsync([FromBody] UpdateProductDto newProductDto)
         {
             Ensure.Any.IsNotNull(newProductDto, nameof(newProductDto));
+            newProductDto.UpdatedBy = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             await _productService.UpdateAsync(newProductDto);
+            if(newProductDto.NewProductPictureDto != null && newProductDto.NewProductPictureDto.Count > 0)
+            {
+                if(newProductDto.ProductImageDtos != null && newProductDto.ProductImageDtos.Count > 0)
+                {
+                    await _productImageService.RemoveRangeAsync(newProductDto.ProductImageDtos.AsEnumerable());
+                    // add new pictures 
+                    for (int i = 0; i < newProductDto.NewProductPictureDto.Count; i++)
+                    {
+                        newProductDto.NewProductPictureDto.ElementAt(i).ProductId = newProductDto.Id;
+                    }
+                    await _productImageService.AddRangeAsync(newProductDto.NewProductPictureDto.AsEnumerable());
+                }
+            }
+
+
             return NoContent();
         }
         /*[HttpGet]

@@ -9,6 +9,9 @@ import AddProduct from './pages/AdminPages/Product/AddProduct'
 import ViewCategory from './pages/AdminPages/Category/ViewCategory'
 import ViewProduct from './pages/AdminPages/Product/ViewProduct'
 import UpdateCategory from './pages/AdminPages/Category/UpdateCategory'
+import NotFound from './pages/page404'
+import Forbidden  from './pages/page403'
+import CallbackPage from './components/Callback'
 
 export default function Router() {
   return useRoutes([
@@ -31,6 +34,14 @@ export default function Router() {
         {
           path: "category",
           element: <CategoryList/>
+        },
+        {
+          path: "403",
+          element: <Forbidden/>
+        },
+        {
+          path: "404",
+          element: <NotFound/>
         }
       ],
     },
@@ -49,6 +60,7 @@ export default function Router() {
        
       ]
     },
+    { path: '/callback', element: <CallbackPage /> },
     {
       path: "/admin/category",
       element: <Dashboard/>,
@@ -66,7 +78,8 @@ export default function Router() {
           element: <UpdateCategory/>
         }
       ]
-    }
-    
+    },
+
+    // { path: '*', element: <Navigate to="/admin/404" replace /> }
   ])
 }

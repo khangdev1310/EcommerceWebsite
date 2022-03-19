@@ -101,7 +101,6 @@ export default function AddProduct() {
   useEffect(() => {
     dispatch(AsyncGetAllCategories())
   }, [])
-  console.log(productForm)
 
   return (
     <div className="main-content">

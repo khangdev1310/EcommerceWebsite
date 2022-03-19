@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Ecommerce.Identity.Migrations.AspNetIdentityDb
+namespace Ecommerce.Identity.Migrations
 {
     public partial class initAspNetIdentityDb : Migration
     {

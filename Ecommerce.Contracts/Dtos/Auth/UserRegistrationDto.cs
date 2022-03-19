@@ -27,9 +27,11 @@ namespace Ecommerce.Contracts.Dtos.Auth
         [Compare("Password", ErrorMessage = "Mật khẩu nhập lại không chính xác")]
         public string ConfirmPassword { get; set; }
 
+        [Required(ErrorMessage = "PhoneNumber không được để trống")]
+        [MaxLength(18)]
         public string PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "Line 1 không được để trống")]
+        [Required(ErrorMessage = "Street không được để trống")]
         [MaxLength(255)]
         public string Line1 { get; set; }
 

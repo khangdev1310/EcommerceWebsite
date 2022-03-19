@@ -31,7 +31,7 @@ export const AsyncCreateCategories = createAsyncThunk(
       const response = await axiosClient.post('category', values)
       return response
     } catch (error) {
-      return rejectWithValue(error.response.data)
+      return rejectWithValue(error.response)
     }
   },
 )
@@ -43,7 +43,7 @@ export const AsyncUpdateCategories = createAsyncThunk(
       const response = await axiosClient.put('category', values)
       return response
     } catch (error) {
-      return rejectWithValue(error.response.data)
+      return rejectWithValue(error.response)
     }
   },
 )
@@ -56,7 +56,7 @@ export const AsyncDeleteCategories = createAsyncThunk(
 
       return response
     } catch (error) {
-      return rejectWithValue(error.response.data)
+      return rejectWithValue(error.response)
     }
   },
 )
@@ -77,7 +77,7 @@ const categorySlice = createSlice({
       state.loading = true
     },
     [AsyncGetAllCategories.fulfilled]: (state, action) => {
-      state.categories = action.payload.data
+      state.categories = action.payload["$values"]
     },
     [AsyncGetAllCategories.rejected]: (state, action) => {
       state.error = action.error
@@ -87,6 +87,7 @@ const categorySlice = createSlice({
     },
     [AsyncCreateCategories.fulfilled]: (state, action) => {
       state.loading = false
+      state.categories.push(action.payload)
       SweetAlert('success', 'Thêm danh mục thành công', 1500)
     },
     [AsyncCreateCategories.rejected]: (state, action) => {

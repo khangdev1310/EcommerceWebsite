@@ -67,13 +67,13 @@ namespace Ecommerce.Identity
                 scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
 
                 var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
-                /*context.Database.Migrate();*/
+                context.Database.Migrate();
 
-               /* EnsureSeedData(context);
-*/
-                var ctx = scope.ServiceProvider.GetService<AspNetIdentityDbContext>();
-                /*ctx.Database.Migrate();*/
-                EnsureRoles(scope);
+                EnsureSeedData(context);
+
+            var ctx = scope.ServiceProvider.GetService<AspNetIdentityDbContext>();
+            ctx.Database.Migrate();
+            EnsureRoles(scope);
                 EnsureUsers(scope);
             }
 

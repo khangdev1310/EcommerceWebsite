@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Ecommerce.Identity.Migrations
+namespace Ecommerce.Identity.Migrations.ConfigurationDb
 {
     public partial class initConfigurationDb : Migration
     {

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Contracts.Dtos
 {
-    public class CreateProductDto
+    public class UpdateProductDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Desc { get; set; }
@@ -15,7 +16,10 @@ namespace Ecommerce.Contracts.Dtos
         public int Quantity { get; set; }
         public string Status { get; set; }
         public Guid CategoryId { get; set; }
-        public ICollection<CreateProductImageDto> ProductImageDtos { get; set; }
+        public string? UpdatedBy { get; set; }
+
+        public ICollection<CreateProductImageDto> NewProductPictureDto { get; set; }
+        public ICollection<ProductImageDto> ProductImageDtos { get; set; }
         
     }
 }

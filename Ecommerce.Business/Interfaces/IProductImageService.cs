@@ -21,5 +21,6 @@ namespace Ecommerce.Business.Interfaces
 
         Task UpdateAsync(ProductImageDto ProductDto);
         Task<IEnumerable<ProductImageDto>> AddRangeAsync(IEnumerable<CreateProductImageDto> items);
+        Task RemoveRangeAsync(IEnumerable<ProductImageDto> productPictures);
     }
 }

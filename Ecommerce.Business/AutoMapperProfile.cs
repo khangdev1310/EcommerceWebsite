@@ -36,6 +36,7 @@ namespace Rookie.Ecom.Business
             CreateMap<ProductImageDto, ProductImage>(memberList: AutoMapper.MemberList.None);
 
             CreateMap<CreateProductImageDto, ProductImage>(memberList: AutoMapper.MemberList.None);
+            
 
 
             //Order
@@ -55,6 +56,7 @@ namespace Rookie.Ecom.Business
 
             //Auth
             CreateMap<OrganicIdentityUserDto, EcommerceUser>(memberList: AutoMapper.MemberList.None);
+            CreateMap<UserRegistrationDto, EcommerceUser>(memberList: AutoMapper.MemberList.None);
 
         }
 

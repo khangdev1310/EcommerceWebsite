@@ -12,14 +12,24 @@ namespace Ecommerce.Identity
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-             new IdentityResource("roles", new[] { "role" }) //Add this line
         };
+
+
+        public static IEnumerable<ApiResource> ApiResources =>
+       new ApiResource[]
+       {
+            new ApiResource("api1", "API #1") {Scopes = {"roles"} },
+            // local API
+            new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
+       };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new[] {
-                new ApiScope("api1", "https://localhost:5003")
+                new ApiScope("roles", new List<string>() { "role", "location" }),
         };
 
+
+       
 
         public static IEnumerable<Client> Clients =>
         new List<Client>
@@ -82,7 +92,9 @@ namespace Ecommerce.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         "roles"
                     },
-                  AllowAccessTokensViaBrowser = true
+                  AllowAccessTokensViaBrowser = true,
+                  AlwaysSendClientClaims = true,
+                  AlwaysIncludeUserClaimsInIdToken = true
             }
         };
     };

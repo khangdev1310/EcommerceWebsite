@@ -80,5 +80,10 @@ namespace Ecommerce.DataAccessor
             await _dbContext.SaveChangesAsync();
 
         }
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
+        {
+            _dbContext.Set<T>().RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

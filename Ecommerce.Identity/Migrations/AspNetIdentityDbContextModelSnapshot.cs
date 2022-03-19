@@ -4,16 +4,14 @@ using Ecommerce.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Ecommerce.Identity.Migrations.AspNetIdentityDb
+namespace Ecommerce.Identity.Migrations
 {
     [DbContext(typeof(AspNetIdentityDbContext))]
-    [Migration("20220313111457_initAspNetIdentityDb")]
-    partial class initAspNetIdentityDb
+    partial class AspNetIdentityDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

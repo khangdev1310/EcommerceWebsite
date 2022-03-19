@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Identity.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20220313111443_initPersistedGrantDb")]
+    [Migration("20220319134822_initPersistedGrantDb")]
     partial class initPersistedGrantDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

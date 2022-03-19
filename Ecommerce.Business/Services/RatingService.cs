@@ -49,7 +49,7 @@ namespace Ecommerce.Business.Services
         public async Task<List<RatingDto>> GetListRatingByProductIdAsync(Guid productId)
         {
             var query = _baseRepository.Entities;
-            query = query.Where(o => o.ProductId == productId);
+            query = query.Where(o => o.ProductId == productId).Where(o => o.IsRated == true);
 
             return _mapper.Map<List<RatingDto>>(await query.ToListAsync());
         }

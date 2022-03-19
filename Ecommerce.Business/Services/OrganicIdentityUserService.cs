@@ -73,7 +73,7 @@ namespace Ecommerce.Business.Services
                     new IdentityError[] {
                       new IdentityError{
                          Code = "0001",
-                         Description = "Email đã được sử dụng"
+                         Description = "This email used"
                       }
                     }
                     );
@@ -84,24 +84,18 @@ namespace Ecommerce.Business.Services
                    new IdentityError[] {
                       new IdentityError{
                          Code = "0002",
-                         Description = "Role không hợp lệ hoặc không tồn tại"
+                         Description = "This role doesn't exist"
                       }
                    }
                    );
             }
             else
             {
-                var user = new EcommerceUser
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    UserName = request.Email,
-                    NormalizedUserName = request.Email,
-                    Email = request.Email,
-                    PhoneNumber = request.PhoneNumber,
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
-                };
+
+                var user = _mapper.Map<EcommerceUser>(request);
+                user.PhoneNumberConfirmed = user.EmailConfirmed = true;
+                user.UserName = user.NormalizedUserName = user.Email;
+
                 var result = await _userManager.CreateAsync(user, request.Password);
 
 
@@ -123,10 +117,11 @@ namespace Ecommerce.Business.Services
             }
 
         }
-
     }
 
-
-
-
 }
+
+
+
+
+

@@ -1,8 +1,9 @@
-import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
+import userManager from '../../untils/userManager';
 
 export default function Dashboard() {
-  
+
   return (
     <div className="app">
       <div className="layout">
@@ -208,11 +209,16 @@ export default function Dashboard() {
                     className="dropdown-item d-block p-h-15 p-v-10"
                   >
                     <div className="d-flex align-items-center justify-content-between">
-                      <div>
+                      <div onClick={ async () => {
+                        
+                          const user = await userManager.getUser();
+                          localStorage.removeItem("user");
+                          userManager.signoutRedirect({id_token_hint: user.id_token})
+                          userManager.removeUser();
+                        }}>
                         <i className="anticon opacity-04 font-size-16 anticon-logout" />
-                        <span className="m-l-10">Logout</span>
+                        <span className="m-l-10" >Logout</span>
                       </div>
-                      <i className="anticon font-size-10 anticon-right" />
                     </div>
                   </a>
                 </div>
@@ -256,237 +262,16 @@ export default function Dashboard() {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <Link to="/admin/product">Danh sách sản phẩm</Link>
+                    <Link to="/admin/category">Danh mục sản phẩm</Link>
                   </li>
                   <li>
-                    <Link to="/admin/category">Danh mục sản phẩm</Link>
+                    <Link to="/admin/product">Danh sách sản phẩm</Link>
                   </li>
 
                 </ul>
               </li>
               {/* Quản lý sản phẩm END */}
               
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-build" />
-                  </span>
-                  <span className="title">UI Elements</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="avatar.html">Avatar</a>
-                  </li>
-                  <li>
-                    <a href="alert.html">Alert</a>
-                  </li>
-                  <li>
-                    <a href="badge.html">Badge</a>
-                  </li>
-                  <li>
-                    <a href="buttons.html">Buttons</a>
-                  </li>
-                  <li>
-                    <a href="cards.html">Cards</a>
-                  </li>
-                  <li>
-                    <a href="icons.html">Icons</a>
-                  </li>
-                  <li>
-                    <a href="lists.html">Lists</a>
-                  </li>
-                  <li>
-                    <a href="typography.html">Typography</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-hdd" />
-                  </span>
-                  <span className="title">Components</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="accordion.html">Accordion</a>
-                  </li>
-                  <li>
-                    <a href="carousel.html">Carousel</a>
-                  </li>
-                  <li>
-                    <a href="dropdown.html">Dropdown</a>
-                  </li>
-                  <li>
-                    <a href="modals.html">Modals</a>
-                  </li>
-                  <li>
-                    <a href="toasts.html">Toasts</a>
-                  </li>
-                  <li>
-                    <a href="popover.html">Popover</a>
-                  </li>
-                  <li>
-                    <a href="slider-progress.html">Slider &amp; Progress</a>
-                  </li>
-                  <li>
-                    <a href="tabs.html">Tabs</a>
-                  </li>
-                  <li>
-                    <a href="tooltips.html">Tooltips</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-form" />
-                  </span>
-                  <span className="title">Forms</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="form-elements.html">Form Elements</a>
-                  </li>
-                  <li>
-                    <a href="form-layouts.html">Form Layouts</a>
-                  </li>
-                  <li>
-                    <a href="form-validation.html">Form Validation</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-table" />
-                  </span>
-                  <span className="title">Tables</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="basic-table.html">Basic Table</a>
-                  </li>
-                  <li>
-                    <a href="data-table.html">Data Table</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-pie-chart" />
-                  </span>
-                  <span className="title">Charts</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="chartist.html">Chartist</a>
-                  </li>
-                  <li>
-                    <a href="chartjs.html">ChartJs</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-file" />
-                  </span>
-                  <span className="title">Pages</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="profile.html">Profile</a>
-                  </li>
-                  <li>
-                    <a href="invoice.html">Invoice</a>
-                  </li>
-                  <li>
-                    <a href="members.html">Members</a>
-                  </li>
-                  <li>
-                    <a href="pricing.html">Pricing</a>
-                  </li>
-                  <li>
-                    <a href="setting.html">Setting</a>
-                  </li>
-                  <li className="nav-item dropdown">
-                    <a href="javascript:void(0);">
-                      <span>Blog</span>
-                      <span className="arrow">
-                        <i className="arrow-icon" />
-                      </span>
-                    </a>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a href="blog-grid.html">Blog Grid</a>
-                      </li>
-                      <li>
-                        <a href="blog-list.html">Blog List</a>
-                      </li>
-                      <li>
-                        <a href="blog-post.html">Blog Post</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="dropdown-toggle" href="javascript:void(0);">
-                  <span className="icon-holder">
-                    <i className="anticon anticon-lock" />
-                  </span>
-                  <span className="title">Authentication</span>
-                  <span className="arrow">
-                    <i className="arrow-icon" />
-                  </span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="login-1.html">Login 1</a>
-                  </li>
-                  <li>
-                    <a href="login-2.html">Login 2</a>
-                  </li>
-                  <li>
-                    <a href="login-3.html">Login 3</a>
-                  </li>
-                  <li>
-                    <a href="sign-up-1.html">Sign Up 1</a>
-                  </li>
-                  <li>
-                    <a href="sign-up-2.html">Sign Up 2</a>
-                  </li>
-                  <li>
-                    <a href="sign-up-3.html">Sign Up 3</a>
-                  </li>
-                  <li>
-                    <a href="error-1.html">Error 1</a>
-                  </li>
-                  <li>
-                    <a href="error-2.html">Error 2</a>
-                  </li>
-                </ul>
-              </li>
             </ul>
           </div>
         </div>

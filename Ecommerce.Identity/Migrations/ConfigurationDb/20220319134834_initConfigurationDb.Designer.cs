@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Ecommerce.Identity.Migrations
+namespace Ecommerce.Identity.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20220313111433_initConfigurationDb")]
+    [Migration("20220319134834_initConfigurationDb")]
     partial class initConfigurationDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -77,5 +77,10 @@ namespace Ecommerce.Business.Services
 
             return _mapper.Map<IEnumerable<ProductImageDto>>(itemProductPictures);
         }
+            
+        public async Task RemoveRangeAsync(IEnumerable<ProductImageDto> productPictures)
+        {
+            await _baseRepository.RemoveRangeAsync(_mapper.Map<IEnumerable<ProductImage>>(productPictures));
+        }
     }
 }

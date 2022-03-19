@@ -3,6 +3,7 @@ using Ecommerce.Contracts;
 using Ecommerce.Contracts.Constants;
 using Ecommerce.Contracts.Dtos;
 using EnsureThat;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase

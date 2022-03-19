@@ -27,7 +27,8 @@ export const getAllProductsAsync = createAsyncThunk(
         },
       })
 
-      return response.data
+      
+      return response
     } catch (error) {
       return rejectWithValue(error.response.data)
     }
@@ -38,9 +39,9 @@ export const createProductAsync = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await axiosClient.post(`/product`, values)
-      return response.data
+      return response
     } catch (error) {
-      return rejectWithValue(error.response.data)
+      return rejectWithValue(error.response)
     }
   },
 )
@@ -51,7 +52,7 @@ export const deleteProductAsync = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await axiosClient.delete(`/product/${values.id}`)
-      return response.data
+      return response
     } catch (error) {
       return rejectWithValue(error.response.data)
     }
@@ -71,11 +72,12 @@ export const productSlice = createSlice({
       state.loading = true
     },
     [getAllProductsAsync.fulfilled]: (state, action) => {
+      
       state.loading = false
       state.currentPage = action.payload.currentPage
       state.totalPages = action.payload.totalPages
       state.totalItems = action.payload.totalItems
-      state.products = action.payload.items
+      state.products = action.payload.items["$values"]
     },
     [getAllProductsAsync.rejected]: (state, action) => {
       state.loading = false
@@ -85,7 +87,9 @@ export const productSlice = createSlice({
       state.loading = true
     },
     [createProductAsync.fulfilled]: (state, action) => {
+      console.log(action);
       state.loading = false
+      state.products.push(action.payload);
       SweetAlert('success', 'Thêm sản phẩm thành công', 1500)
     },
     [createProductAsync.rejected]: (state, action) => {

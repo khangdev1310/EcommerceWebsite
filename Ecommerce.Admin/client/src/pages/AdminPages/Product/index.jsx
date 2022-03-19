@@ -44,6 +44,8 @@ export default function ProductList() {
   useEffect(() => {
     dispatch(getAllProductsAsync({ currentPage: 1, limit: 10 }))
   }, [])
+
+  
   return (
     <div className="main-content">
       <div className="page-header">
@@ -119,13 +121,12 @@ export default function ProductList() {
                 </tr>
               </thead>
               <tbody>
-                {products &&
-                  products.map((item, index) => (
+                {products && products.map((item, index) => (
                     <tr key={item.id}>
                       <td>#{index + 1}</td>
                       <td>{item.name}</td>
 
-                      <td>{item.category.name}</td>
+                      <td>{item?.category?.name}</td>
                       <td>{item.desc}</td>
                       <td>${item.price}</td>
                       <td>{item.quantity}</td>

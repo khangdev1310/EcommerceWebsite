@@ -6,13 +6,17 @@ import { store } from './app/store'
 import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker'
 import { BrowserRouter } from 'react-router-dom'
+import { OidcProvider } from 'redux-oidc'
+import userManager from './untils/userManager'
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <OidcProvider store={store} userManager={userManager}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </OidcProvider>
+  </Provider>,
   document.getElementById('root'),
 )
 

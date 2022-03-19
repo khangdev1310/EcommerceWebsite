@@ -1,7 +1,22 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import userManager from '../../untils/userManager';
 
 export default function Home() {
+
+  const navigate = useNavigate();
+  const isAuthenticated = Boolean(localStorage.getItem('user'));
+  if(!isAuthenticated) {
+    userManager.signinRedirect();
+  }
+
+
+  userManager.getUser().then(user => {
+    console.log(user);
+    if(user.profile.role !== 'Admin') {
+      navigate('/admin/404');
+    }
+  });
   return (
     <div className="main-content">
       <div className="row">
