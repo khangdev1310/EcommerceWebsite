@@ -25,7 +25,7 @@ export default function CallbackPage() {
         successCallback={handleLoginSuccess}
         errorCallback={error => {
             navigate('/admin/404');
-          console.error(error);
+          
         }}
       >
         <div>Redirecting...</div>

@@ -271,7 +271,14 @@ export default function Dashboard() {
                 </ul>
               </li>
               {/* Quản lý sản phẩm END */}
-              
+              <li className="nav-item dropdown">
+                <Link className="dropdown-toggle" to="/admin/user">
+                  <span className="icon-holder">
+                    <i className="anticon anticon-appstore" />
+                  </span>
+                  <span className="title">Quản lý người dùng</span>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

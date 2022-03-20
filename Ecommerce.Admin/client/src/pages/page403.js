@@ -12,16 +12,13 @@ export default function page403() {
           <div className="row align-items-center">
             <div className="col-md-6">
               <div className="p-v-30">
-                <h1 className="font-weight-semibold display-1 text-primary lh-1-2">
-                  403
-                </h1>
                 <h2 className="font-weight-light font-size-30">
                   Whoops! Looks like you got lost
                 </h2>
                 <p className="lead m-b-30">
                   We couldnt find what you were looking for.
                 </p>
-                <Link to="/" className="btn btn-primary btn-tone">
+                <Link to="/admin/dashboard" className="btn btn-primary btn-tone">
                   Go Back
                 </Link>
               </div>
@@ -29,7 +26,7 @@ export default function page403() {
             <div className="col-md-6 m-l-auto">
               <img
                 className="img-fluid"
-                src="assets/images/others/error-1.png"
+                src="/images/http-403-error-http-404-http-cookie-forbidden-0aafae671098fd383cf39a053f7354fb.png"
                 alt
               />
             </div>

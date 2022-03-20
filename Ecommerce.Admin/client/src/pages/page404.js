@@ -12,9 +12,6 @@ export default function page404() {
           <div className="row align-items-center">
             <div className="col-md-6">
               <div className="p-v-30">
-                <h1 className="font-weight-semibold display-1 text-primary lh-1-2">
-                  404
-                </h1>
                 <h2 className="font-weight-light font-size-30">
                   Whoops! Looks like you got lost
                 </h2>
@@ -29,7 +26,7 @@ export default function page404() {
             <div className="col-md-6 m-l-auto">
               <img
                 className="img-fluid"
-                src="assets/images/others/error-1.png"
+                src="/images/http-404-error.png"
                 alt
               />
             </div>

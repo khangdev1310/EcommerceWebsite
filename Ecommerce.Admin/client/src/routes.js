@@ -12,6 +12,7 @@ import UpdateCategory from './pages/AdminPages/Category/UpdateCategory'
 import NotFound from './pages/page404'
 import Forbidden  from './pages/page403'
 import CallbackPage from './components/Callback'
+import User from './pages/AdminPages/User'
 
 export default function Router() {
   return useRoutes([
@@ -34,6 +35,10 @@ export default function Router() {
         {
           path: "category",
           element: <CategoryList/>
+        },
+        {
+          path: "user",
+          element: <User/>
         },
         {
           path: "403",

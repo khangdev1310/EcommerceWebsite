@@ -4,6 +4,7 @@ import { formatDateTime } from '../../../untils/formatDateTime'
 
 export default function ViewProduct() {
   const { state } = useLocation()
+  console.log(state);
   const navigate = useNavigate()
   
   return (
@@ -15,7 +16,7 @@ export default function ViewProduct() {
               className="avatar avatar-image rounded"
               style={{ height: 70, width: 70 }}
             >
-              <img src={state.productImages[0].imageUrl} alt="temp" />
+              <img src={state.productImages["$values"][0].imageUrl} alt="temp" />
             </div>
             <div className="m-l-15">
               <h4 className="m-b-0">{state.name}</h4>
@@ -202,7 +203,7 @@ export default function ViewProduct() {
               <div className="card-body">
                 <div className="row">
                   {state.productImages &&
-                    state.productImages.map((item, index) => (
+                    state.productImages["$values"].map((item, index) => (
                       <div className="col-md-3" key={index}>
                         <img style={{width: "100%", height: "100%"}} src={item.imageUrl} alt="temp" />
                       </div>

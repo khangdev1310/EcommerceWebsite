@@ -51,6 +51,7 @@ export const deleteProductAsync = createAsyncThunk(
   'products/deleteProduct',
   async (values, { rejectWithValue }) => {
     try {
+      console.log(values);
       const response = await axiosClient.delete(`/product/${values.id}`)
       return response
     } catch (error) {
@@ -64,6 +65,7 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     setDeleteProduct: (state, action) => {
+      console.log(action);
       state.productDeleteTemp = action.payload
     },
   },
@@ -101,6 +103,7 @@ export const productSlice = createSlice({
     },
     [deleteProductAsync.fulfilled]: (state, action) => {
       state.loading = false
+      console.log(state.productDeleteTemp);
       state.products = state.products.filter(
         (p) => p.id !== state.productDeleteTemp.id,
       )
@@ -108,7 +111,7 @@ export const productSlice = createSlice({
       SweetAlert('success', 'Xóa sản phẩm thành công', 1500)
 
       const deletePromise = []
-      state.productDeleteTemp.productImages.forEach((image) => {
+      state.productDeleteTemp.productImages["$values"].forEach((image) => {
         const beforeLink = exactFirebaseLink(image.imageUrl)
         if (beforeLink !== null) {
           const desertRef = ref(storage, beforeLink)
