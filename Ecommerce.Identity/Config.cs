@@ -78,12 +78,12 @@ namespace Ecommerce.Identity
                 RedirectUris = new List<string>()
                     {
                         "https://localhost:3000/callback",
-                        "https://localhost:5003/callback"
+                        "https://localhost:5001/callback"
                     },
                  PostLogoutRedirectUris = new List<string>()
                     {
                         "https://localhost:3000/",
-                        "https://localhost:5003/"
+                        "https://localhost:5001/"
                     },
 
                   AllowedScopes =
